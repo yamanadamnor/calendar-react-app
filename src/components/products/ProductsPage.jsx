@@ -4,13 +4,22 @@ import * as product from 'api/product/product.js';
 export default class ProductsPage extends React.Component {
   constructor(props) {
     super(props);
-    product.getAll();
   }
 
+  renderProducts() {
+    return (
+      <p>{product.getAll()}</p>
+    );
+  }
 
   render() {
     return (
-      <h2>This is where the products should be</h2>
+      <div className="content">
+        <h2>This is where the products should be</h2>
+        <p>
+          test hello
+        </p>
+      </div>
     );
   }
 }

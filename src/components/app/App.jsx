@@ -1,7 +1,10 @@
 import React from 'react';
+import * as account from 'api/account/account';
+import WelcomePage from 'components/app/WelcomePage';
 import RegisterPage from 'components/auth/register/RegisterPage';
+import LoginPage from 'components/auth/login/LoginPage';
 import ProductsPage from 'components/products/ProductsPage';
-import { Route, NavLink, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,18 +14,18 @@ export default class App extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    let check = await account.validateLoggedIn();
+    this.setState({ loggedIn: check });
+  }
+
   render() {
     return (
       <BrowserRouter>
-        <div className="container">
-          <ul className="header">
-            <li><NavLink to="/">Products</NavLink></li>
-            <li><NavLink to="/register">Register</NavLink></li>
-          </ul>
-          <div className="content">
-            <Route exact path="/" component={ProductsPage}/>
-            <Route path="/register" component={RegisterPage}/>
-          </div>
+        <div className="content">
+          <Route exact path="/" component={this.state.loggedIn ? ProductsPage : WelcomePage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/login" component={LoginPage} />
         </div>
       </BrowserRouter>
     );

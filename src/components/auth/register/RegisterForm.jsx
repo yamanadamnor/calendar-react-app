@@ -1,5 +1,5 @@
 import React from 'react';
-import * as account from 'api/account/account.js';
+import * as account from 'api/account/account';
 
 
 export default class RegisterForm extends React.Component {
@@ -28,8 +28,6 @@ export default class RegisterForm extends React.Component {
   }
 
   handleSubmit(event) {
-    // event.preventDefault();
-    // alert('Submitted email and password: ' + this.state.emailValue + " " + this.state.passValue);
     account.createAccount(this.state);
     event.preventDefault();
   }

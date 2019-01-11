@@ -1,13 +1,14 @@
-export function getAll() {
-  console.log(document.cookie);
-  // fetch("http://localhost:8000/api/products/", {
-  //   method: "GET",
-  //   mode: "cors",
-  //   body: JSON.stringify(account),
-  //   headers:{
-  //     'Content-Type': 'application/json',
-  //   }
-  // }).then(res => res.json())
-  //   .then(response => console.log("Success:", JSON.stringify(response)))
-  //   .catch(error => console.error("Error:", error));
+import * as utils from 'api/utils/utils';
+
+export async function getAll() {
+  const response = await fetch("http://localhost:8000/api/products/", {
+    method: "GET",
+    // mode: "cors",
+    // credentials: 'include',
+    headers: {
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  });
+
+  return await response.json();
 }
