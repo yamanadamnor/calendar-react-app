@@ -1,5 +1,5 @@
 import React from 'react';
-import './WelcomePage.css';
+// import './WelcomePage.css';
 import { NavLink } from 'react-router-dom';
 
 export default function WelcomePage(props) {
