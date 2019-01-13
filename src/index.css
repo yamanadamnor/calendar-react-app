@@ -4,38 +4,38 @@
   --color-secondary: #978AFF;
 }
 
+
 /* Buttons */
-.btn {
-  border-radius: 25px;
-  text-transform: uppercase;
-  text-align: center;
-  transition: .1s;
-}
+/* .btn { */
+/*   border-radius: 25px; */
+/*   text-transform: uppercase; */
+/*   text-align: center; */
+/*   transition: .1s; */
+/* } */
 
-.btn:hover {
-  color: white;
-  text-decoration: none;
-}
+/* .btn:hover { */
+/*   color: white; */
+/*   text-decoration: none; */
+/* } */
 
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-  padding: 15px 30px;
-}
+/* .btn-primary { */
+/*   background: var(--color-primary); */
+/*   color: white; */
+/*   padding: 15px 30px; */
+/* } */
 
-.btn-primary:hover {
-  background: var(--color-secondary); 
-}
+/* .btn-primary:hover { */
+/*   background: var(--color-secondary); */ 
+/* } */
 
-.btn-secondary {
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
-  padding: 13px 30px;
-}
+/* .btn-secondary { */
+/*   border: 2px solid var(--color-primary); */
+/*   color: var(--color-primary); */
+/*   padding: 13px 30px; */
+/* } */
 
-.btn-secondary:hover {
-  background: var(--color-secondary);
-  border-color: var(--color-secondary);
-  color: white;
-}
-
+/* .btn-secondary:hover { */
+/*   background: var(--color-secondary); */
+/*   border-color: var(--color-secondary); */
+/*   color: white; */
+/* } */

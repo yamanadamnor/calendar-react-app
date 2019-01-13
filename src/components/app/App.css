@@ -1,0 +1,58 @@
+.route-wrapper {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.bg {
+  background: url(../../assets/welcome-bg.jpg) no-repeat center;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+div.transition-group {
+  position: relative;
+}
+
+/* Fade Transitions */
+.fade-enter {
+  opacity: .01;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: .01;
+  transition: opacity .3s ease-in;
+}
+
+/* Slide transitions */
+.slide-enter {
+  left: 100%;
+}
+
+.slide-enter.slide-enter-active {
+  left: 0;
+  transition: left .3s ease-in-out;
+}
+
+.slide-exit {
+  left: 0;
+}
+
+.slide-exit.slide-exit-active {
+  left: -100%;
+  transition: left .3s ease-in-out;
+}

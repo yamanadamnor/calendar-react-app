@@ -1,9 +1,6 @@
-h1 {
-  font-size: 3em; 
-}
-
+h1,
 p {
-  font-size: 1.2em;
+  color: white;
 }
 
 .container {
@@ -12,33 +9,29 @@ p {
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  padding: 20px 40px;
   height: 100vh;
 }
 
 .title-container,
 .button-container {
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-flow: column nowrap;
+  height: 100%;
   width: 100%;
 }
 
 .title-container {
-  display: flex;
-  flex-flow: column nowrap;
+  justify-content: flex-end;
 }
 
-.list-group {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.button-container {
+  justify-content: center;
 }
 
-.list-group-item {
-  margin: 20px 0;
-}
-
-.btn {
-  width: 300px;
+.btn-custom {
   display: block;
+  width: 200px;
+  margin-bottom: 20px;
 }

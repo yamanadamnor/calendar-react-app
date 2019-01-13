@@ -5,7 +5,7 @@ export default class LoginPage extends React.Component {
   render() {
     return (
       <div className="container">
-        <h2 className="my-3">Sign in</h2>
+        <h1>Sign in</h1>
         <LoginForm />
       </div>
     );

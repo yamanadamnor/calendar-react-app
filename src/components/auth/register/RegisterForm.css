@@ -1,0 +1,8 @@
+label[for^="register"] {
+  color: white !important;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 480px;
+}

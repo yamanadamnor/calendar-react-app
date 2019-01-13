@@ -5,7 +5,7 @@ export default class LoginPage extends React.Component {
   render() {
     return (
       <div className="container">
-        <h2 className="my-3">Register Account</h2>
+        <h1>Register Account</h1>
         <RegisterForm />
       </div>
     );

@@ -1,0 +1,23 @@
+.login-form {
+  width: 100%;
+  max-width: 480px;
+}
+
+.ant-checkbox-wrapper span {
+  color: white !important;
+}
+
+.login-form-button {
+  display: block;
+  width: 100%;
+}
+
+.remember-forgot-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.color-white {
+  color: white; 
+}

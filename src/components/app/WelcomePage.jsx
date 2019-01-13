@@ -1,6 +1,8 @@
 import React from 'react';
-// import './WelcomePage.css';
+import './WelcomePage.css';
 import { NavLink } from 'react-router-dom';
+import { Button } from 'antd';
+
 
 export default function WelcomePage(props) {
   return (
@@ -10,10 +12,8 @@ export default function WelcomePage(props) {
         <p>Revolutionizing the way of planning</p>
       </div>
       <div className="button-container">
-        <ul className="list-group">
-          <li className="list-group-item"><NavLink className="btn btn-primary" to="/register">Register</NavLink></li>
-          <li className="list-group-item"><NavLink className="btn btn-secondary" to="/login">Login</NavLink></li>
-        </ul>
+        <Button className="btn-custom" type="primary"><NavLink to="/register">Register</NavLink></Button>
+        <Button className="btn-custom" type="default"><NavLink to="/login">Login</NavLink></Button>
       </div>
     </div>
   )
