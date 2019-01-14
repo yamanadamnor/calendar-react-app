@@ -1,20 +1,29 @@
 import React from 'react';
 import './WelcomePage.css';
-import { NavLink } from 'react-router-dom';
 import { Button } from 'antd';
 
+export default class WelcomePage extends React.Component {
+  handleLinkClick = (endpoint) => {
+    this.props.history.push(endpoint);
+  }
 
-export default function WelcomePage(props) {
-  return (
-    <div className="container">
-      <div className="title-container">
-        <h1>PlannerOwO</h1>
-        <p>Revolutionizing the way of planning</p>
+  render() {
+    return (
+      <div className="container container-welcome">
+        <div className="bg"></div>
+        <div className="title-container">
+          <h1 className="welcome">PlannerOwO</h1>
+          <p className="welcome">Revolutionizing the way of planning</p>
+        </div>
+        <div className="button-container">
+          <Button
+            onClick={() => this.handleLinkClick('/register')} className="btn-custom" type="primary"
+          >Register</Button>
+          <Button 
+            onClick={() => this.handleLinkClick('/login')} className="btn-custom" type="default"
+          >Login</Button>
+        </div>
       </div>
-      <div className="button-container">
-        <Button className="btn-custom" type="primary"><NavLink to="/register">Register</NavLink></Button>
-        <Button className="btn-custom" type="default"><NavLink to="/login">Login</NavLink></Button>
-      </div>
-    </div>
-  )
+    )
+  }
 }

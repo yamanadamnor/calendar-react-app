@@ -1,5 +1,5 @@
-h1,
-p {
+h1.welcome,
+p.welcome {
   color: white;
 }
 
@@ -11,6 +11,20 @@ p {
   width: 100%;
   padding: 20px 40px;
   height: 100vh;
+}
+
+.container-welcome {
+  background: url(../../assets/welcome-bg.jpg) no-repeat center;
+  background-size: cover;
+}
+
+.bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 .title-container,

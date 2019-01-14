@@ -5,15 +5,6 @@
   left: 0;
 }
 
-.bg {
-  background: url(../../assets/welcome-bg.jpg) no-repeat center;
-  background-size: cover;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 
 div.transition-group {
   position: relative;

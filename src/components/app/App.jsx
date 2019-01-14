@@ -9,7 +9,6 @@ import LoginPage from 'components/auth/login/LoginPage';
 import ProductsPage from 'components/products/ProductsPage';
 import './App.css';
 
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -35,7 +34,6 @@ export default class App extends React.Component {
 const RouteContainer = withRouter((props) => {
   return (
     <div>
-      <div className="bg"></div>
       <TransitionGroup>
         <CSSTransition
           key={props.location.key}
