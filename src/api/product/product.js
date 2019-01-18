@@ -1,4 +1,4 @@
-import * as utils from 'api/utils/utils';
+import * as utils from '../utils/utils';
 
 export async function getAll() {
   const response = await fetch("http://localhost:8000/api/products/", {

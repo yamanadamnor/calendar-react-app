@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Form, Input, Button, Checkbox } from 'antd';
 
-import * as account from 'api/account/account';
+import * as account from '../../../api/account/account';
 import './LoginForm.css';
 
 class LoginForm extends React.Component {

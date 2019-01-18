@@ -1,5 +1,5 @@
 import React from 'react';
-import * as product from 'api/product/product.js';
+import * as product from '../../api/product/product.js';
 
 export default class ProductsPage extends React.Component {
   renderProducts() {

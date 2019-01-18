@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, BrowserRouter, Switch, withRouter } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group-v2';
 
-import * as account from 'api/account/account';
-import WelcomePage from 'components/app/WelcomePage';
-import RegisterPage from 'components/auth/register/RegisterPage';
-import LoginPage from 'components/auth/login/LoginPage';
-import ProductsPage from 'components/products/ProductsPage';
+import * as account from '../../api/account/account';
+import WelcomePage from '../app/WelcomePage';
+import RegisterPage from '../auth/register/RegisterPage';
+import LoginPage from '../auth/login/LoginPage';
+import ProductsPage from '../products/ProductsPage';
 import './App.css';
 
 export default class App extends React.Component {

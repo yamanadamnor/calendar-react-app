@@ -1,4 +1,4 @@
-import * as utils from 'api/utils/utils';
+import * as utils from '../utils/utils';
 
 export function createAccount(account) {
   fetch("http://localhost:8000/auth/register/", {
