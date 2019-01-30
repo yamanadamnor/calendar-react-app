@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 // import './bootstrap.min.css';
 // import './bootstrap-reboot.min.css';
 import './index.css';
-import App from './components/app/App'
+import App from './components/app/App';
 
 ReactDOM.render(
   <App />,
