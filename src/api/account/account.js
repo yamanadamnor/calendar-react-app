@@ -1,7 +1,7 @@
 import * as utils from '../utils/utils';
 
 export function createAccount(account) {
-  fetch("http://localhost:8000/auth/register/", {
+  fetch("https://51.15.110.202.xip.io/auth/register/", {
     method: "POST",
     // mode: "cors",
     body: JSON.stringify(account),
@@ -15,7 +15,7 @@ export function createAccount(account) {
 }
 
 export function loginAccount(account) {
-  fetch("http://localhost:8000/auth/login/", {
+  fetch("https://51.15.110.202.xip.io/auth/login/", {
     method: "POST",
     // mode: "cors",
     body: JSON.stringify(account),
@@ -29,7 +29,7 @@ export function loginAccount(account) {
 }
 
 export async function validateLoggedIn() {
-  const response = await fetch("http://localhost:8000/api/account/validate/", {
+  const response = await fetch("https://51.15.110.202.xip.io/api/account/validate/", {
     method: "GET",
     // mode: "cors",
     // credentials: 'include',

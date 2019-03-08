@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 
-import * as account from '../../../api/account/account';
 import './RegisterForm.css';
 
 class RegisterForm extends React.Component {

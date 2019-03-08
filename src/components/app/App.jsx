@@ -6,14 +6,14 @@ import * as account from '../../api/account/account';
 import WelcomePage from '../app/WelcomePage';
 import RegisterPage from '../auth/register/RegisterPage';
 import LoginPage from '../auth/login/LoginPage';
-import ProductsPage from '../products/ProductsPage';
+import CalendarPage from '../calendar/CalendarPage';
 import './App.css';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
+      loggedIn: true,
     }
   }
 
@@ -42,7 +42,7 @@ const RouteContainer = withRouter((props) => {
         >
           <div className="route-wrapper">
             <Switch location={props.location}>
-              <Route exact path="/" component={props.loggedIn ? ProductsPage : WelcomePage} />
+              <Route exact path="/" component={props.loggedIn ? CalendarPage : WelcomePage} />
               <Route path="/register" component={RegisterPage} />
               <Route path="/login" component={LoginPage} />
             </Switch>

@@ -1,7 +1,7 @@
 import * as utils from '../utils/utils';
 
 export async function getAll() {
-  const response = await fetch("http://localhost:8000/api/products/", {
+  const response = await fetch("https://51.15.110.202.xip.io/api/calendar/events/", {
     method: "GET",
     // mode: "cors",
     // credentials: 'include',
