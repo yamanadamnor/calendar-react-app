@@ -5,8 +5,12 @@ import * as account from '../../../api/account/account';
 import './RegisterForm.css';
 
 class RegisterForm extends React.Component {
-  state = {
-    confirmDirty: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      confirmDirty: false,
+      emailStatus: "",
+    }
   }
 
   handleSubmit = (e) => {
@@ -19,10 +23,12 @@ class RegisterForm extends React.Component {
         }
         account.createAccount(acc).then((response) => {
           if (response.error) {
-            console.log(response.error);
+            this.setState({
+              emailStatus: response.error}
+            );
+          } else {
+            this.props.onSuccessResponse(response);
           }
-          // Calls handleLogin in App.jsx to change logged in state
-          this.props.onLogin(response); 
         });
       }
     });
@@ -82,6 +88,8 @@ class RegisterForm extends React.Component {
         <Form.Item
           {...formItemLayout}
           label="E-mail"
+          validateStatus={this.state.emailStatus ? "error" : ""}
+          help={this.state.emailStatus || ""}
         >
           {getFieldDecorator('email', {
             rules: [{

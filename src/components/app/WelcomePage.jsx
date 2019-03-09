@@ -1,10 +1,12 @@
 import React from 'react';
-import './WelcomePage.css';
 import { Button } from 'antd';
+
+import history from '../history'; 
+import './WelcomePage.css';
 
 export default class WelcomePage extends React.Component {
   handleLinkClick = (endpoint) => {
-    this.props.history.push(endpoint);
+    history.push(endpoint);
   }
 
   render() {

@@ -1,14 +1,21 @@
 import React from 'react';
+
 import RegisterForm from './RegisterForm';
 
-export default class LoginPage extends React.Component {
+export default class RegisterPage extends React.Component {
+  handleSuccessResponse = (response) => {
+    this.props.onLogin();
+  }
+
   render() {
     return (
-      <div className="container">
-        <div className="register-title">
-          <h1>Register Account</h1>
+      <div>
+        <div className="container">
+          <div className="register-title">
+            <h1>Register Account</h1>
+          </div>
+          <RegisterForm onSuccessResponse={this.handleSuccessResponse} />
         </div>
-        <RegisterForm onLogin={this.props.onLogin} />
       </div>
     );
   }

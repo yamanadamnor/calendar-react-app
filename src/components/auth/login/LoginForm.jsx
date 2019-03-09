@@ -1,11 +1,22 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Alert } from 'antd';
 
 import * as account from '../../../api/account/account';
+import history from '../../history'; 
 import './LoginForm.css';
 
 class LoginForm extends React.Component {
-  // TODO: Fix handlesubmit function
+  constructor(props) {
+    super(props);
+    this.state = {
+      responseError: "", 
+    }
+  }
+
+  handleLinkClick = (endpoint) => {
+    history.push(endpoint);
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -14,8 +25,16 @@ class LoginForm extends React.Component {
           "email": values.email,
           "password": values.password,
         }
-        let success = account.loginAccount(acc);
-        this.props.onLogin(success);
+        account.loginAccount(acc).then((response) => {
+          if (response.error) {
+            console.log(response.error);
+            this.setState({
+              responseError: response.error
+            });
+          } else {
+            this.props.onSuccessResponse(response);
+          }
+        })
       }
     });
   }
@@ -25,20 +44,28 @@ class LoginForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
+        <Form.Item
+          validateStatus={this.state.responseError ? "error" : ""}
+        >
           {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your email!' }],
           })(
             <Input placeholder="Email" />
           )}
         </Form.Item>
-        <Form.Item>
+        <Form.Item
+          validateStatus={this.state.responseError ? "error" : ""}
+        >
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password!' }],
           })(
             <Input type="password" placeholder="Password" />
           )}
         </Form.Item>
+
+        {this.state.responseError ? 
+          <Alert message={this.state.responseError} type="error" /> : null}
+
         <Form.Item>
           <div className="remember-forgot-container"> 
             {getFieldDecorator('remember', {
@@ -52,7 +79,11 @@ class LoginForm extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
-          <span>Or</span> <a href="#">register now!</a>
+          <span>Or </span> 
+          <a href="/register" onClick={(e) => {
+            e.preventDefault();
+            this.handleLinkClick('/register');
+          }}>register now!</a>
         </Form.Item>
       </Form>
     );
