@@ -22,10 +22,14 @@ export default class App extends React.Component {
     this.setState({ loggedIn: check });
   }
 
+  handleLogin = (loggedIn) => {
+    this.setState(loggedIn)
+  }
+
   render() {
     return (
       <BrowserRouter>
-        <RouteContainer loggedIn={this.state.loggedIn} />
+        <RouteContainer loggedIn={this.state.loggedIn} handleLogin={this.handleLogin} />
       </BrowserRouter>
     );
   }
@@ -43,8 +47,8 @@ const RouteContainer = withRouter((props) => {
           <div className="route-wrapper">
             <Switch location={props.location}>
               <Route exact path="/" component={props.loggedIn ? CalendarPage : WelcomePage} />
-              <Route path="/register" component={RegisterPage} />
-              <Route path="/login" component={LoginPage} />
+              <Route path="/register" render={() => <RegisterPage onLogin={props.handleLogin} />} />
+              <Route path="/login" render={() => <LoginPage onLogin={props.handleLogin} />} />
             </Switch>
           </div>
         </CSSTransition>

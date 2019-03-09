@@ -6,7 +6,7 @@ export default class LoginPage extends React.Component {
     return (
       <div className="container">
         <h1>Sign in</h1>
-        <LoginForm />
+        <LoginForm onLogin={this.props.onLogin} />
       </div>
     );
   }

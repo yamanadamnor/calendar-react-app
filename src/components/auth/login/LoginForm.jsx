@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 
-// import * as account from '../../../api/account/account';
+import * as account from '../../../api/account/account';
 import './LoginForm.css';
 
 class LoginForm extends React.Component {
@@ -10,7 +10,12 @@ class LoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        let acc = {
+          "email": values.email,
+          "password": values.password,
+        }
+        let success = account.loginAccount(acc);
+        this.props.onLogin(success);
       }
     });
   }
@@ -21,10 +26,10 @@ class LoginForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: 'Please input your email!' }],
           })(
-            <Input placeholder="Username" />
+            <Input placeholder="Email" />
           )}
         </Form.Item>
         <Form.Item>

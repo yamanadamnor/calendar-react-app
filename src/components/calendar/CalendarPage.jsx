@@ -15,15 +15,20 @@ export default class CalendarPage extends React.Component {
     }
   }
 
-  onSelect = (selectedValue) => {
+  handleSelect = (selectedValue) => {
     this.setState({
       selectedValue,
       modalVisible: true,
     });
+    console.log(this.state);
   }
 
-  onPanelChange = (selectedValue) => {
+  handlePanelChange = (selectedValue) => {
     this.setState({ selectedValue });
+  }
+
+  handleVisibleModalChange = (visible) => {
+    this.setState({ modalVisible: visible })
   }
 
   render() {
@@ -34,10 +39,14 @@ export default class CalendarPage extends React.Component {
         <Calendar
           dateCellRender={dateCellRender}
           value={selectedValue}
-          onSelect={this.onSelect}
-          onPanelChange={this.onPanelChange}
+          onSelect={this.handleSelect}
+          onPanelChange={this.handlePanelChange}
         />
-        <EventModal date={selectedValue} visible={modalVisible} />
+        <EventModal 
+          date={selectedValue}
+          visible={modalVisible}
+          onVisibleChange={this.handleVisibleModalChange}
+        />
       </div>
     );
   }

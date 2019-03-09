@@ -8,7 +8,7 @@ export default class LoginPage extends React.Component {
         <div className="register-title">
           <h1>Register Account</h1>
         </div>
-        <RegisterForm />
+        <RegisterForm onLogin={this.props.onLogin} />
       </div>
     );
   }

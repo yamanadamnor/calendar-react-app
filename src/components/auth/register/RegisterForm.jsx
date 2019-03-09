@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
 
+import * as account from '../../../api/account/account';
 import './RegisterForm.css';
 
 class RegisterForm extends React.Component {
@@ -12,8 +13,17 @@ class RegisterForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // TODO: handle submit to api
-        console.log('Received values of form: ', values);
+        let acc = {
+          "email": values.email,
+          "password": values.password,
+        }
+        account.createAccount(acc).then((response) => {
+          if (response.error) {
+            console.log(response.error);
+          }
+          // Calls handleLogin in App.jsx to change logged in state
+          this.props.onLogin(response); 
+        });
       }
     });
   }
