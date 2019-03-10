@@ -24,8 +24,8 @@ class RegisterForm extends React.Component {
         account.createAccount(acc).then((response) => {
           if (response.error) {
             this.setState({
-              emailStatus: response.error}
-            );
+              emailStatus: response.error
+            });
           } else {
             this.props.onSuccessResponse(response);
           }

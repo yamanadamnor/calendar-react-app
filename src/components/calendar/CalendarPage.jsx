@@ -1,17 +1,18 @@
 import React from 'react';
-import { Calendar, Alert, Badge } from 'antd';
+import { Calendar, Badge } from 'antd';
 import moment from 'moment';
 
 import EventModal from './EventModal';
+import * as calendar from '../../api/calendar/calendar';
 import './CalendarPage.css';
 
 export default class CalendarPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: moment(),
       selectedValue: moment(),
       modalVisible: false,
+      events: convertEvents(calendar.getAllEvents()),
     }
   }
 
@@ -20,7 +21,6 @@ export default class CalendarPage extends React.Component {
       selectedValue,
       modalVisible: true,
     });
-    console.log(this.state);
   }
 
   handlePanelChange = (selectedValue) => {
@@ -31,13 +31,30 @@ export default class CalendarPage extends React.Component {
     this.setState({ modalVisible: visible })
   }
 
+  dateCellRender = (date) => {
+    // TODO: renders before this.state.events has received
+    // all events from the api, fix
+    const events = this.state.events[date.date()];
+
+    return (
+      <ul className="events-calendar">
+        {
+          events.map(event => (
+            <li key={event.name}>
+              <Badge status="success" text={event.name} />
+            </li>
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     const { selectedValue, value, modalVisible } = this.state;
     return (
       <div>
-        <Alert message={`You selected date: ${value.format("dddd Do MMM")}`} />
         <Calendar
-          dateCellRender={dateCellRender}
+          dateCellRender={this.dateCellRender}
           value={selectedValue}
           onSelect={this.handleSelect}
           onPanelChange={this.handlePanelChange}
@@ -52,21 +69,20 @@ export default class CalendarPage extends React.Component {
   }
 }
 
-function dateCellRender(value) {
-  const lmao = [
-    { name: 'lmao1', desc: 'desc1' },
-    { name: 'lmao2', desc: 'desc2' },
-  ];
-  
-  return (
-    <ul className="events-calendar">
-      {
-        lmao.map(item => (
-          <li key={item.name}>
-            <Badge status="success" text={item.name} />
-          </li>
-        ))
-      }
-    </ul>
-  )
+function convertEvents(events) {
+  let newEvents = {};
+  for (var i = 1; i <= 31; i++) {
+    newEvents[i] = [];
+  }
+
+  events.then(res => {
+    res.map(event => {
+      let dateObj = new Date(event.starts_at);
+      let momentObj = moment(dateObj);
+      let date = momentObj.date();
+      newEvents[date].push(event);
+    })
+  });
+
+  return newEvents;
 }
