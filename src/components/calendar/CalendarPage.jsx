@@ -10,31 +10,73 @@ export default class CalendarPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: moment(),
+      selectedDate: moment(),
       modalVisible: false,
-      events: convertEvents(calendar.getAllEvents()),
+      events: [],
     }
   }
 
-  handleSelect = (selectedValue) => {
+  componentDidMount() {
+    const d = new Date(), y = d.getFullYear(), m = d.getMonth();
+    const from = new Date(y, m, 1);
+    const to = new Date(y, m +1, 1);
+    const events = calendar.getAllEventsInInterval(from, to);
+
+    events.then(res => {
+      this.setState({
+        events: convertEvents(res),
+      });
+    });
+  }
+
+  handleSelect = (selectedDate) => {
     this.setState({
-      selectedValue,
       modalVisible: true,
     });
   }
 
-  handlePanelChange = (selectedValue) => {
-    this.setState({ selectedValue });
+  // called when changing months/mode
+  handlePanelChange = (date, mode) => {
+    const d = date.toDate(), y = d.getFullYear(), m = d.getMonth();
+    const from = new Date(y, m, 1);
+    const to = new Date(y, m +1, 1);
+
+    // all events between the first day and the last day of the
+    // selected month
+    const events = calendar.getAllEventsInInterval(from, to);
+
+    events.then(res => {
+      // Empty events if the result is empty
+      if (res === null) {
+        this.setState({
+          events: [],
+        });
+        return;
+      }
+
+      this.setState({
+        events: convertEvents(res),
+      });
+    });
   }
 
   handleVisibleModalChange = (visible) => {
     this.setState({ modalVisible: visible })
   }
 
+  handleChange = (date) => {
+    this.setState({
+      selectedDate: date,
+    });
+  }
+
   dateCellRender = (date) => {
-    // TODO: renders before this.state.events has received
-    // all events from the api, fix
     const events = this.state.events[date.date()];
+
+    // Check if events are fetched
+    if (!events || !events.length) {
+      return;
+    }
 
     return (
       <ul className="events-calendar">
@@ -50,17 +92,18 @@ export default class CalendarPage extends React.Component {
   }
 
   render() {
-    const { selectedValue, value, modalVisible } = this.state;
+    const { selectedDate, value, modalVisible } = this.state;
     return (
       <div>
         <Calendar
           dateCellRender={this.dateCellRender}
-          value={selectedValue}
+          value={selectedDate}
           onSelect={this.handleSelect}
           onPanelChange={this.handlePanelChange}
+          onChange={this.handleChange}
         />
         <EventModal 
-          date={selectedValue}
+          date={selectedDate}
           visible={modalVisible}
           onVisibleChange={this.handleVisibleModalChange}
         />
@@ -75,13 +118,10 @@ function convertEvents(events) {
     newEvents[i] = [];
   }
 
-  events.then(res => {
-    res.map(event => {
-      let dateObj = new Date(event.starts_at);
-      let momentObj = moment(dateObj);
-      let date = momentObj.date();
-      newEvents[date].push(event);
-    })
+  events.map(event => {
+    const dateObj = new Date(event.starts_at);
+    const momentObj = moment(dateObj);
+    newEvents[momentObj.date()].push(event);
   });
 
   return newEvents;
