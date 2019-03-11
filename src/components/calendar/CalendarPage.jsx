@@ -92,7 +92,7 @@ export default class CalendarPage extends React.Component {
   }
 
   render() {
-    const { selectedDate, value, modalVisible } = this.state;
+    const { events, selectedDate, value, modalVisible } = this.state;
     return (
       <div>
         <Calendar
@@ -104,6 +104,7 @@ export default class CalendarPage extends React.Component {
         />
         <EventModal 
           date={selectedDate}
+          events={events[selectedDate.date()]}
           visible={modalVisible}
           onVisibleChange={this.handleVisibleModalChange}
         />

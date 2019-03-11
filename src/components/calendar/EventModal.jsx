@@ -11,9 +11,6 @@ export default class EventModal extends React.Component {
     // }
   }
 
-  showModal = () => {
-  }
-
   handleOk = (e) => {
   }
 
@@ -24,6 +21,20 @@ export default class EventModal extends React.Component {
     this.props.onVisibleChange(visible);
   }
 
+  renderEvents() {
+    // if not empty
+    if (this.props.events) {
+      return (
+        this.props.events.map(event => (
+          <li key={event.name}>
+            {event.name} - {event.description}
+          </li>
+        ))
+      );
+    } 
+    return null;
+  }
+
 
   render() {
     return (
@@ -32,7 +43,11 @@ export default class EventModal extends React.Component {
         visible={this.props.visible}
         onOk={() => this.handleVisibleChange(false)}
         onCancel={() => this.handleVisibleChange(false)}
-      />
+      >
+        <ul className="modal-events">
+          {this.renderEvents()}
+        </ul>
+      </Modal>
     );
   }
 }
