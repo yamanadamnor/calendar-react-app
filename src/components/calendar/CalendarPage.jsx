@@ -23,6 +23,11 @@ export default class CalendarPage extends React.Component {
     const events = calendar.getAllEventsInInterval(from, to);
 
     events.then(res => {
+      // Empty events if the result is empty
+      if (res === null) {
+        return;
+      }
+
       this.setState({
         events: convertEvents(res),
       });
