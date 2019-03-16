@@ -10,7 +10,7 @@ export function getAllEventsInInterval(from, to) {
   return fetch(url, {
     method: "GET",
     mode: "cors",
-    credentials: 'include',
+    credentials: "include",
     headers: {
       'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
     }
@@ -23,11 +23,24 @@ export function getAllEvents() {
   return fetch("http://localhost:8000/api/calendar/events/", {
     method: "GET",
     mode: "cors",
-    credentials: 'include',
+    credentials: "include",
     headers: {
       'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
     }
   }).then(res => res.json())
     .catch(error => console.error("Error:", error));
+}
+
+// event is an object
+export function updateEvent(id, event) {
+  return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(event),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    },
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error))
   
 }

@@ -13,8 +13,15 @@ export default class EventModal extends React.Component {
     }
   }
 
-  handleOk = (e) => {
+  handleOk = e => {
     // TODO: handle save, send post request with changed values
+    this.setState({
+      editing: false,
+    });
+  }
+
+  handleCancel = e => {
+    // TODO: handle cancel, don't save and just close
     this.props.onVisibleChange(false);
 
     this.setState({
@@ -22,13 +29,10 @@ export default class EventModal extends React.Component {
     });
   }
 
-  handleCancel = (e) => {
-    // TODO: handle cancel, don't save and just close
-    this.props.onVisibleChange(false);
-
+  handleBack = e => {
     this.setState({
       editing: false,
-    });
+    })
   }
 
   renderItemTitle = (start, end, title) => {
@@ -49,25 +53,6 @@ export default class EventModal extends React.Component {
       editing: true,
       editingEvent: event,
     });
-  }
-
-  renderEdit() {
-    return (
-      <Form>
-        <Form.Item label="Name">
-          <Input
-            type="text"
-            value={this.state.editingEvent.name}
-          />
-        </Form.Item>
-        <Form.Item label="Description">
-          <Input.TextArea
-            rows={4}
-            value={this.state.editingEvent.description}
-          />
-        </Form.Item>
-      </Form>
-    );
   }
 
   renderEventList() {
@@ -102,14 +87,32 @@ export default class EventModal extends React.Component {
   }
 
   render() {
+    const eventForm = 
+      <EventForm 
+        event={this.state.editingEvent}
+      />;
+    const footer = [
+      <Button key="back" onClick={this.handleBack}>Go Back</Button>,
+      <Button 
+        form="event-form"
+        key="submit"
+        type="primary"
+        onClick={this.handleOk}
+        htmlType="submit"
+      >
+        Save
+      </Button>,
+    ];
+
     return (
       <Modal
         title={this.props.date.format("dddd Do MMM")}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        footer={this.state.editing ? footer : null}
       >
-        {this.state.editing ? this.renderEdit() : this.renderEventList()}
+        {this.state.editing ? eventForm : this.renderEventList()}
       </Modal>
     );
   }

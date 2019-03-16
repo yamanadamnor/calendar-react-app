@@ -5,21 +5,31 @@ class EventForm extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    console.log("submitted:D");
+  }
   
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
-      <Form>
+      <Form id="event-form" onSubmit={this.handleSubmit}>
         <Form.Item label="Name">
-          <Input
-            type="text"
-            value={this.state.editingEvent.name}
-          />
+          {getFieldDecorator('name', {
+            initialValue: this.props.event.name,
+          })(
+            <Input type="text" />
+          )}
         </Form.Item>
         <Form.Item label="Description">
-          <Input.TextArea
-            rows={4}
-            value={this.state.editingEvent.description}
-          />
+          {getFieldDecorator('description', {
+            initialValue: this.props.event.description,
+          })(
+            <Input.TextArea
+              rows={4}
+            />
+          )}
         </Form.Item>
       </Form>
     );
