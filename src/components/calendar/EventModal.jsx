@@ -106,7 +106,6 @@ export default class EventModal extends React.Component {
               ]}
             >
               <List.Item.Meta
-                // title={<ItemTitle start={event.starts_at} end={event.ends_at} />}
                 title={this.renderItemTitle(event.starts_at, event.ends_at, event.name)}
                 description={event.description}
               />

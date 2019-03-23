@@ -100,7 +100,13 @@ export default class CalendarPage extends React.Component {
     });
   }
 
+  // TODO: calendar currently wont render days outside the current month
+  // could change but low priority
   dateCellRender = (date) => {
+    // Check if date is in the current month
+    if (date.month() !== this.state.selectedDate.month()) {
+      return;
+    }
     const events = this.state.events[date.date()];
 
     // Check if events are fetched
