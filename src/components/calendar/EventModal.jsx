@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Input, Modal, List, Button } from 'antd';
+import { Form, Input, Modal, List, Button, message } from 'antd';
 import moment from 'moment';
 
 import EventForm from './EventForm';
+import * as calendar from '../../api/calendar/calendar';
 
 export default class EventModal extends React.Component {
   constructor(props) {
@@ -13,17 +14,9 @@ export default class EventModal extends React.Component {
     }
   }
 
-  handleOk = e => {
-    // TODO: handle save, send post request with changed values
-    this.setState({
-      editing: false,
-    });
-  }
-
   handleCancel = e => {
     // TODO: handle cancel, don't save and just close
     this.props.onVisibleChange(false);
-
     this.setState({
       editing: false,
     });
@@ -32,7 +25,7 @@ export default class EventModal extends React.Component {
   handleBack = e => {
     this.setState({
       editing: false,
-    })
+    });
   }
 
   renderItemTitle = (start, end, title) => {
@@ -52,6 +45,45 @@ export default class EventModal extends React.Component {
     this.setState({
       editing: true,
       editingEvent: event,
+    });
+  }
+
+  saveEventFormRef = (eventFormRef) => {
+    this.eventFormRef = eventFormRef;
+  }
+
+  // Handles submit child form
+  handleOk = () => {
+    const form = this.eventFormRef.props.form; 
+    const event = this.eventFormRef.props.event;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      console.log(values.starts_at_time.get('hour'));
+
+      values.starts_at = values.starts_at_date.set({
+        hour: values.starts_at_time.get('hour'),
+        minute: values.starts_at_time.get('minute'),
+      })
+
+      values.ends_at = values.ends_at_date.set({
+        hour: values.ends_at_time.get('hour'),
+        minute: values.ends_at_time.get('minute'),
+      })
+
+      calendar.updateEvent(event.id, values);
+
+      // Hides the modal
+      this.props.onVisibleChange(false);
+
+      // Refreshes the calendar
+      this.props.onEventUpdate();
+      this.setState({
+        editing: false,
+      });
+
+      message.success(`Successfully updated event '${event.name}'!`);
     });
   }
 
@@ -90,6 +122,7 @@ export default class EventModal extends React.Component {
     const eventForm = 
       <EventForm 
         event={this.state.editingEvent}
+        wrappedComponentRef={this.saveEventFormRef}
       />;
     const footer = [
       <Button key="back" onClick={this.handleBack}>Go Back</Button>,
@@ -98,7 +131,6 @@ export default class EventModal extends React.Component {
         key="submit"
         type="primary"
         onClick={this.handleOk}
-        htmlType="submit"
       >
         Save
       </Button>,

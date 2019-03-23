@@ -1,17 +1,3 @@
-import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Row, Col } from 'antd';
-import moment from 'moment';
-
-class EventForm extends React.Component {
-  createMoment = (dateStr) => {
-    const d = new Date(dateStr);
-    return moment(d);
-  }
-
-  // TODO: rules, errors, dates before now etc
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
       <Form id="event-form">
         <Form.Item label="Name">
           {getFieldDecorator('name', {
@@ -36,7 +22,10 @@ class EventForm extends React.Component {
               {getFieldDecorator('starts_at_date', {
                 initialValue: this.createMoment(this.props.event.starts_at),
               })(
-                <DatePicker />
+                <DatePicker
+                  onChange={this.onChange}
+                  onOk={this.onOk}
+                />
             )}
             </Form.Item>
           </Col>
@@ -60,7 +49,10 @@ class EventForm extends React.Component {
               {getFieldDecorator('ends_at_date', {
                 initialValue: this.createMoment(this.props.event.ends_at),
               })(
-                <DatePicker />
+                <DatePicker
+                  onChange={this.onChange}
+                  onOk={this.onOk}
+                />
               )}
             </Form.Item>
           </Col>
@@ -78,8 +70,3 @@ class EventForm extends React.Component {
           </Col>
         </Row>
       </Form>
-    );
-  }
-}
-
-export default EventForm = Form.create({})(EventForm);

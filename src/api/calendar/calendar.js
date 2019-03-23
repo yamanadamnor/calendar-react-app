@@ -36,6 +36,8 @@ export function updateEvent(id, event) {
   return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
     method: "PUT",
     body: JSON.stringify(event),
+    mode: "cors",
+    credentials: "include",
     headers: {
       'Content-Type': 'application/json',
       'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),

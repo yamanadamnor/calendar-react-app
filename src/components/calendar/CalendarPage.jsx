@@ -65,6 +65,31 @@ export default class CalendarPage extends React.Component {
     });
   }
 
+  // Refresh the calendar when an event is updated in a child modal/form
+  handleEventUpdate = () => {
+    const d = this.state.selectedDate.toDate(), y = d.getFullYear(), m = d.getMonth();
+    const from = new Date(y, m, 1);
+    const to = new Date(y, m +1, 1);
+
+    // all events between the first day and the last day of the
+    // selected month
+    const events = calendar.getAllEventsInInterval(from, to);
+
+    events.then(res => {
+      // Empty events if the result is empty
+      if (res === null) {
+        this.setState({
+          events: [],
+        });
+        return;
+      }
+
+      this.setState({
+        events: convertEvents(res),
+      });
+    });
+  }
+
   handleVisibleModalChange = (visible) => {
     this.setState({ modalVisible: visible })
   }
@@ -112,6 +137,7 @@ export default class CalendarPage extends React.Component {
           events={events[selectedDate.date()]}
           visible={modalVisible}
           onVisibleChange={this.handleVisibleModalChange}
+          onEventUpdate={this.handleEventUpdate}
         />
       </div>
     );
