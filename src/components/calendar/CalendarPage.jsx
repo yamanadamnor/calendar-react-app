@@ -2,7 +2,7 @@ import React from 'react';
 import { Calendar, Badge, Button } from 'antd';
 import moment from 'moment';
 
-import EventModal from './EventModal';
+import CalendarModal from './CalendarModal';
 import * as calendar from '../../api/calendar/calendar';
 import './CalendarPage.css';
 
@@ -12,6 +12,7 @@ export default class CalendarPage extends React.Component {
     this.state = {
       selectedDate: moment(),
       modalVisible: false,
+      modalMode: "", // should be either "update", "create" or "list", could prob use enum
       events: [],
     }
   }
@@ -37,7 +38,16 @@ export default class CalendarPage extends React.Component {
   handleSelect = (selectedDate) => {
     this.setState({
       modalVisible: true,
+      modalMode: "list",
     });
+  }
+
+  handleCreateClick = e => {
+    this.setState({
+      modalVisible: true,
+      modalMode: "create",
+    });
+    e.currentTarget.blur();
   }
 
   // called when changing months/mode
@@ -95,9 +105,7 @@ export default class CalendarPage extends React.Component {
   }
 
   handleChange = (date) => {
-    this.setState({
-      selectedDate: date,
-    });
+    this.setState({ selectedDate: date });
   }
 
   // TODO: calendar currently wont render days outside the current month
@@ -127,8 +135,12 @@ export default class CalendarPage extends React.Component {
     );
   }
 
+  handleModalModeChange = mode => {
+    this.setState({ modalMode: mode });
+  }
+
   render() {
-    const { events, selectedDate, value, modalVisible } = this.state;
+    const { events, selectedDate, value, modalVisible, modalMode } = this.state;
     return (
       <div>
         <Calendar
@@ -138,10 +150,12 @@ export default class CalendarPage extends React.Component {
           onPanelChange={this.handlePanelChange}
           onChange={this.handleChange}
         />
-        <EventModal 
+        <CalendarModal 
           date={selectedDate}
           events={events[selectedDate.date()]}
           visible={modalVisible}
+          mode={modalMode}
+          onModeChange={this.handleModalModeChange}
           onVisibleChange={this.handleVisibleModalChange}
           onEventUpdate={this.handleEventUpdate}
         />

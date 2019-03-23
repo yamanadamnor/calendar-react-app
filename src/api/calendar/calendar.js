@@ -32,6 +32,21 @@ export function getAllEvents() {
 }
 
 // event is an object
+export function createEvent(event) {
+  return fetch('http://localhost:8000/api/calendar/event/', {
+    method: "POST",
+    body: JSON.stringify(event),
+    mode: "cors",
+    credentials: "include",
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    },
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error))
+}
+
+// event is an object
 export function updateEvent(id, event) {
   return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
     method: "PUT",

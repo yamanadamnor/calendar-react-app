@@ -10,26 +10,22 @@ export default class EventModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editing: false, 
       editingEvent: moment(),
+      buttonLoading: false,
     }
   }
 
   handleCancel = e => {
-    // TODO: handle cancel, don't save and just close
+    // Hide the modal
     this.props.onVisibleChange(false);
-    this.setState({
-      editing: false,
-    });
   }
 
   handleBack = e => {
-    this.setState({
-      editing: false,
-    });
+    // Change mode back to list
+    this.props.onModeChange("list");
   }
 
-  renderItemTitle = (start, end, title) => {
+  renderModalTitle = (start, end, title) => {
     // TODO: check time zone conversion between server and client
     const sd = new Date(start), ed = new Date(end);
     const s = moment(sd).format('LT'), e = moment(ed).format('LT');
@@ -43,10 +39,10 @@ export default class EventModal extends React.Component {
   }
 
   handleEditClick = event => {
+    // Change modal mode to editing 
+    this.props.onModeChange("update");
     this.setState({
-      editing: true,
       editingEvent: event,
-      deleteVisibility: false,
     });
   }
 
@@ -54,46 +50,59 @@ export default class EventModal extends React.Component {
     this.eventFormRef = eventFormRef;
   }
 
+  // TODO: modify to work with both creating and updating (using props?)
   // Handles submit child form
   handleOk = () => {
     const form = this.eventFormRef.props.form; 
     const event = this.eventFormRef.props.event;
+
+    this.setState({ buttonLoading: true });
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      console.log(values.starts_at_time.get('hour'));
 
       values.starts_at = values.starts_at_date.set({
         hour: values.starts_at_time.get('hour'),
         minute: values.starts_at_time.get('minute'),
-      })
+      });
 
       values.ends_at = values.ends_at_date.set({
         hour: values.ends_at_time.get('hour'),
         minute: values.ends_at_time.get('minute'),
-      })
-
-      calendar.updateEvent(event.id, values);
-
-      // Hides the modal
-      this.props.onVisibleChange(false);
-
-      // Refreshes the calendar
-      this.props.onEventUpdate();
-      this.setState({
-        editing: false,
       });
 
-      message.success(`Successfully updated event '${event.name}'!`);
+      if (this.props.mode === "update") {
+        calendar.updateEvent(event.id, values)
+          .then(
+            this.setState({ buttonLoading: false }),
+
+            // Hides the modal
+            this.props.onVisibleChange(false),
+
+            // Refreshes the calendar
+            this.props.onEventUpdate(),
+
+            message.success(`Successfully updated event '${event.name}'!`)
+          );
+      } else {
+        calendar.createEvent(values)
+          .then(
+            this.setState({ buttonLoading: false }),
+
+            // Hides the modal
+            this.props.onVisibleChange(false),
+
+            // Refreshes the calendar
+            this.props.onEventUpdate(),
+
+            message.success(`Successfully created event '${values.name}'!`)
+          );
+      }
     });
   }
 
-  handleDeleteVisibility = visible => {
-    this.setState({ deleteVisibility: visible })
-  }
-
-  handleDelete = event => {
+  handleDelete = (event) => {
     calendar.deleteEvent(event.id);
 
     // Hides the modal
@@ -102,14 +111,11 @@ export default class EventModal extends React.Component {
     // Refreshes the calendar
     this.props.onEventUpdate();
 
-    this.setState({ 
-      deleteVisibility: false,
-    });
-
     message.success(`Successfully deleted event '${event.name}'!`);
   }
 
   renderEventList() {
+    // TODO: popover currently doesnt hide when confirm button is clicked
     const popoverContent = (event) => (
       <Button type="danger" onClick={() => this.handleDelete(event)} block>
         Confirm
@@ -145,7 +151,7 @@ export default class EventModal extends React.Component {
               ]}
             >
               <List.Item.Meta
-                title={this.renderItemTitle(event.starts_at, event.ends_at, event.name)}
+                title={this.renderModalTitle(event.starts_at, event.ends_at, event.name)}
                 description={event.description}
               />
             </List.Item>
@@ -160,9 +166,10 @@ export default class EventModal extends React.Component {
     const eventForm = 
       <EventForm 
         event={this.state.editingEvent}
+        mode={this.props.mode}
         wrappedComponentRef={this.saveEventFormRef}
       />;
-    const footer = [
+    const editFooter = [
       <Button key="back" onClick={this.handleBack}>Go Back</Button>,
       <Button 
         form="event-form"
@@ -174,15 +181,28 @@ export default class EventModal extends React.Component {
       </Button>,
     ];
 
+    const createFooter = [
+      <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
+      <Button 
+        form="event-form"
+        key="submit"
+        type="primary"
+        onClick={this.handleOk}
+      >
+        Create
+      </Button>,
+    ]
+
     return (
       <Modal
-        title={this.props.date.format("dddd Do MMM")}
+        title={this.props.mode === "create" ? "Create new event" 
+            : this.props.date.format("dddd Do MMM")}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
-        footer={this.state.editing ? footer : null}
+        footer={this.props.mode === "update" ? editFooter : createFooter}
       >
-        {this.state.editing ? eventForm : this.renderEventList()}
+        {this.props.mode === "list" ? this.renderEventList() : eventForm}
       </Modal>
     );
   }

@@ -11,18 +11,25 @@ class EventForm extends React.Component {
   // TODO: rules, errors, dates before now etc
   render() {
     const { getFieldDecorator } = this.props.form;
+    const name = this.props.mode === "update" ? this.props.event.name : "";
+    const description = this.props.mode === "update" ? this.props.event.description : "";
+    const starts_at = this.props.mode === "update" ? 
+      this.createMoment(this.props.event.starts_at) : moment();
+    const ends_at = this.props.mode === "update" ? 
+      this.createMoment(this.props.event.ends_at) : moment().add(1, 'hour');
+
     return (
       <Form id="event-form">
         <Form.Item label="Name">
           {getFieldDecorator('name', {
-            initialValue: this.props.event.name,
+            initialValue: name,
           })(
             <Input type="text" />
           )}
         </Form.Item>
         <Form.Item label="Description">
           {getFieldDecorator('description', {
-            initialValue: this.props.event.description,
+            initialValue: description,
           })(
             <Input.TextArea
               rows={4}
@@ -34,7 +41,7 @@ class EventForm extends React.Component {
             <Form.Item>
               { /* TODO: disable dates/time before current date/time */ }
               {getFieldDecorator('starts_at_date', {
-                initialValue: this.createMoment(this.props.event.starts_at),
+                initialValue: starts_at,
               })(
                 <DatePicker />
             )}
@@ -43,7 +50,7 @@ class EventForm extends React.Component {
           <Col span={8} offset={2}>
             <Form.Item>
               {getFieldDecorator('starts_at_time', {
-                initialValue: this.createMoment(this.props.event.starts_at),
+                initialValue: starts_at,
               })(
                 <TimePicker
                   use12Hours
@@ -58,7 +65,7 @@ class EventForm extends React.Component {
           <Col span={12}>
             <Form.Item>
               {getFieldDecorator('ends_at_date', {
-                initialValue: this.createMoment(this.props.event.ends_at),
+                initialValue: ends_at,
               })(
                 <DatePicker />
               )}
@@ -67,7 +74,7 @@ class EventForm extends React.Component {
           <Col span={8} offset={2}>
             <Form.Item>
               {getFieldDecorator('ends_at_time', {
-                initialValue: this.createMoment(this.props.event.ends_at),
+                initialValue: ends_at,
               })(
                 <TimePicker
                   use12Hours
