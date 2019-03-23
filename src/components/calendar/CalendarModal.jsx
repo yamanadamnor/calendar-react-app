@@ -200,7 +200,8 @@ export default class EventModal extends React.Component {
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
-        footer={this.props.mode === "update" ? editFooter : createFooter}
+        footer={this.props.mode === "update" ? editFooter : 
+            this.props.mode === "create" ? createFooter : null}
       >
         {this.props.mode === "list" ? this.renderEventList() : eventForm}
       </Modal>
