@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Input, Modal, List, Button, message } from 'antd';
+import { Form, Input, Modal, List, Button, 
+  message, Popover } from 'antd';
 import moment from 'moment';
 
 import EventForm from './EventForm';
@@ -45,6 +46,7 @@ export default class EventModal extends React.Component {
     this.setState({
       editing: true,
       editingEvent: event,
+      deleteVisibility: false,
     });
   }
 
@@ -87,7 +89,33 @@ export default class EventModal extends React.Component {
     });
   }
 
+  handleDeleteVisibility = visible => {
+    this.setState({ deleteVisibility: visible })
+  }
+
+  handleDelete = event => {
+    calendar.deleteEvent(event.id);
+
+    // Hides the modal
+    this.props.onVisibleChange(false);
+
+    // Refreshes the calendar
+    this.props.onEventUpdate();
+
+    this.setState({ 
+      deleteVisibility: false,
+    });
+
+    message.success(`Successfully deleted event '${event.name}'!`);
+  }
+
   renderEventList() {
+    const popoverContent = (event) => (
+      <Button type="danger" onClick={() => this.handleDelete(event)} block>
+        Confirm
+      </Button>
+    );
+
     // if not empty
     if (this.props.events) {
       return (
@@ -102,7 +130,18 @@ export default class EventModal extends React.Component {
                   shape="circle"
                   icon="edit"
                   onClick={() => this.handleEditClick(event)}
-                />
+                />,
+                <Popover
+                  content={popoverContent(event)}
+                  title={`Are you sure you want to delete '${event.name}'?`}
+                  trigger="click"
+                >
+                  <Button 
+                    type="danger"
+                    shape="circle"
+                    icon="delete"
+                  />
+                </Popover>
               ]}
             >
               <List.Item.Meta

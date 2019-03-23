@@ -44,5 +44,16 @@ export function updateEvent(id, event) {
     },
   }).then(res => res.json())
     .catch(error => console.error("Error:", error))
-  
+}
+
+export function deleteEvent(id) {
+  return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
+    method: "DELETE",
+    mode: "cors",
+    credentials: "include",
+    headers: {
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    },
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error))
 }

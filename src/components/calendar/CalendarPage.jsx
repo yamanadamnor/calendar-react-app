@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Badge } from 'antd';
+import { Calendar, Badge, Button } from 'antd';
 import moment from 'moment';
 
 import EventModal from './EventModal';
@@ -144,6 +144,14 @@ export default class CalendarPage extends React.Component {
           visible={modalVisible}
           onVisibleChange={this.handleVisibleModalChange}
           onEventUpdate={this.handleEventUpdate}
+        />
+        <Button
+          type="primary"
+          shape="circle"
+          icon="plus"
+          size="large"
+          className="create-event-btn-calendar"
+          onClick={this.handleCreateClick}
         />
       </div>
     );

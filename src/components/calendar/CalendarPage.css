@@ -11,3 +11,9 @@
   text-overflow: ellipsis;
   font-size: 12px;
 }
+
+.create-event-btn-calendar {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+}
