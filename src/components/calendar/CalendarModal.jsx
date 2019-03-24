@@ -6,7 +6,7 @@ import moment from 'moment';
 import EventForm from './EventForm';
 import * as calendar from '../../api/calendar/calendar';
 
-export default class EventModal extends React.Component {
+export default class CalendarModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
