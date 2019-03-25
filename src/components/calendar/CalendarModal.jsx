@@ -103,15 +103,16 @@ export default class CalendarModal extends React.Component {
   }
 
   handleDelete = (event) => {
-    calendar.deleteEvent(event.id);
+    calendar.deleteEvent(event.id)
+      .then(
+        // Hides the modal
+        this.props.onVisibleChange(false),
 
-    // Hides the modal
-    this.props.onVisibleChange(false);
+        // Refreshes the calendar
+        this.props.onEventUpdate(),
 
-    // Refreshes the calendar
-    this.props.onEventUpdate();
-
-    message.success(`Successfully deleted event '${event.name}'!`);
+        message.success(`Successfully deleted event '${event.name}'!`)
+      );
   }
 
   renderEventList() {
