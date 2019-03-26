@@ -53,7 +53,7 @@ export default class CalendarModal extends React.Component {
   // TODO: modify to work with both creating and updating (using props?)
   // Handles submit child form
   handleOk = () => {
-    const form = this.eventFormRef.props.form; 
+    const form = this.eventFormRef.props.form;
     const event = this.eventFormRef.props.event;
 
     this.setState({ buttonLoading: true });
@@ -100,6 +100,9 @@ export default class CalendarModal extends React.Component {
           );
       }
     });
+
+    // Clear fields when done
+    form.resetFields();
   }
 
   handleDelete = (event) => {
