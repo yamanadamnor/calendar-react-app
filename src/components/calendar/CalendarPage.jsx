@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Badge, Button } from 'antd';
+import { Calendar, Badge, Button, Layout } from 'antd';
 import moment from 'moment';
 
 import CalendarModal from './CalendarModal';
@@ -14,6 +14,7 @@ export default class CalendarPage extends React.Component {
       modalVisible: false,
       modalMode: "", // should be either "update", "create" or "list", could prob use enum
       events: [],
+      menuCollapsed: true,
     }
   }
 
@@ -139,17 +140,48 @@ export default class CalendarPage extends React.Component {
     this.setState({ modalMode: mode });
   }
 
+  handleMenuVisibility = () => {
+    this.setState({
+      menuCollapsed: !this.state.menuCollapsed,
+    })
+  }
+
   render() {
     const { events, selectedDate, value, modalVisible, modalMode } = this.state;
+    const { Header, Footer, Sider, Content } = Layout;
     return (
       <div>
-        <Calendar
-          dateCellRender={this.dateCellRender}
-          value={selectedDate}
-          onSelect={this.handleSelect}
-          onPanelChange={this.handlePanelChange}
-          onChange={this.handleChange}
-        />
+        <Layout>
+          <Header className="header-calendar">
+            <Button
+              icon="align-left"
+              size="large"
+              ghost="true"
+              onClick={this.handleMenuVisibility}
+              className="menu-toggle-btn"
+            />
+          </Header>
+          <Layout>
+            <Sider
+              breakpoint="lg"
+              collapsedWidth="0"
+              collapsed={this.state.menuCollapsed}
+              trigger={null}
+            >
+              Placeholder menu sider
+            </Sider>
+            <Content>
+              <Calendar
+                dateCellRender={this.dateCellRender}
+                value={selectedDate}
+                onSelect={this.handleSelect}
+                onPanelChange={this.handlePanelChange}
+                onChange={this.handleChange}
+              />
+            </Content>
+          </Layout>
+          <Footer>Placeholder footer</Footer>
+        </Layout>
         <CalendarModal 
           date={selectedDate}
           events={events[selectedDate.date()]}
