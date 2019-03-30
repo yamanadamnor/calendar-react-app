@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Modal, List, Button, 
   message, Popover } from 'antd';
 import moment from 'moment';
@@ -173,6 +173,7 @@ export default class CalendarModal extends React.Component {
         mode={this.props.mode}
         wrappedComponentRef={this.saveEventFormRef}
       />;
+
     const editFooter = [
       <Button key="back" onClick={this.handleBack}>Go Back</Button>,
       <Button 
@@ -195,7 +196,7 @@ export default class CalendarModal extends React.Component {
       >
         Create
       </Button>,
-    ]
+    ];
 
     return (
       <Modal

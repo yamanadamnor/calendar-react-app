@@ -30,6 +30,13 @@ export default class App extends React.Component {
     history.push('/');
   }
 
+  handleLogout= () => {
+    this.setState({
+      loggedIn: false,
+    });
+    history.push('/');
+  }
+
   render() {
     return (
       <Router history={history}>
@@ -42,7 +49,8 @@ export default class App extends React.Component {
             >
               <div className="route-wrapper">
                 <Switch location={location}>
-                  <Route exact path="/" component={this.state.loggedIn ? CalendarPage : WelcomePage} />
+                  <Route exact path="/" render={() => this.state.loggedIn ? 
+                      <CalendarPage onLogout={this.handleLogout} /> : <WelcomePage />} />
                   <Route path="/register" render={() => <RegisterPage onLogin={this.handleLogin} />} />
                   <Route path="/login" render={() => <LoginPage onLogin={this.handleLogin} />} />
                 </Switch>

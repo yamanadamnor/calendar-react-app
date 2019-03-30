@@ -1,9 +1,11 @@
 import React from 'react';
-import { Calendar, Badge, Button, Layout } from 'antd';
+import { Calendar, Badge, Button, Layout, Menu, Icon } from 'antd';
 import moment from 'moment';
+import Media from 'react-media';
 
 import CalendarModal from './CalendarModal';
 import * as calendar from '../../api/calendar/calendar';
+import * as account from '../../api/account/account';
 import './CalendarPage.css';
 
 export default class CalendarPage extends React.Component {
@@ -146,29 +148,79 @@ export default class CalendarPage extends React.Component {
     })
   }
 
+  handleMenuBreakpoint = broken => {
+    this.setState({
+      menuCollapsed: broken,
+    })
+  }
+
+  handleMenuClick = e => {
+    switch(e.key) {
+      case "month":
+        console.log("month");
+        break;
+      case "day":
+        console.log("day");
+        break;
+      case "settings":
+        console.log("settings");
+        break;
+      case "logout":
+        account.logoutAccount()
+          .then(this.props.onLogout());
+        break;
+    }
+  }
+
   render() {
     const { events, selectedDate, value, modalVisible, modalMode } = this.state;
     const { Header, Footer, Sider, Content } = Layout;
     return (
       <div>
-        <Layout>
-          <Header className="header-calendar">
-            <Button
-              icon="align-left"
-              size="large"
-              ghost="true"
-              onClick={this.handleMenuVisibility}
-              className="menu-toggle-btn"
-            />
-          </Header>
+        <Layout style={{ minHeight: "100vh" }}>
+          <Media query="(max-width: 992px)">
+            <Header className="header-calendar" breakpoint="lg">
+              <Button
+                icon="align-left"
+                size="large"
+                ghost="true"
+                onClick={this.handleMenuVisibility}
+                className="menu-toggle-btn"
+              />
+            </Header>
+          </Media>
           <Layout>
             <Sider
               breakpoint="lg"
               collapsedWidth="0"
               collapsed={this.state.menuCollapsed}
+              onBreakpoint={this.handleMenuBreakpoint}
+              theme="dark"
               trigger={null}
             >
-              Placeholder menu sider
+              <Menu 
+                theme="dark" 
+                mode="inline" 
+                defaultSelectedKeys={['month']}
+                onClick={this.handleMenuClick}
+              >
+                <Menu.Item key="month">
+                  <Icon type="calendar" />
+                  <span className="nav-text">Month</span>
+                </Menu.Item>
+                <Menu.Item key="day">
+                  <Icon type="calendar" />
+                  <span className="nav-text">Day</span>
+                </Menu.Item>
+                <Menu.Item key="settings">
+                  <Icon type="setting" />
+                  <span className="nav-text">Settings</span>
+                </Menu.Item>
+                <Menu.Item key="logout">
+                  <Icon type="logout" />
+                  <span className="nav-text">Log out</span>
+                </Menu.Item>
+              </Menu>             
             </Sider>
             <Content>
               <Calendar
@@ -180,7 +232,9 @@ export default class CalendarPage extends React.Component {
               />
             </Content>
           </Layout>
-          <Footer>Placeholder footer</Footer>
+          <Footer style={{ textAlign: "center" }}>
+            PlannerOwO
+          </Footer>
         </Layout>
         <CalendarModal 
           date={selectedDate}

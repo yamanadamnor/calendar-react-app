@@ -26,6 +26,18 @@ export function loginAccount(account) {
     .catch(error => console.error("Error:", error));
 }
 
+export function logoutAccount() {
+  return fetch("http://localhost:8000/api/account/logout/", {
+    method: "DELETE",
+    mode: "cors",
+    credentials: 'include',
+    headers: {
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error));
+}
+
 export async function validateLoggedIn() {
   const response = await fetch("http://localhost:8000/api/account/validate/", {
     method: "GET",
