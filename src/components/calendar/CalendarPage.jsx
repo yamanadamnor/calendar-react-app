@@ -24,18 +24,18 @@ export default class CalendarPage extends React.Component {
     const d = new Date(), y = d.getFullYear(), m = d.getMonth();
     const from = new Date(y, m, 1);
     const to = new Date(y, m +1, 1);
-    const events = calendar.getAllEventsInInterval(from, to);
 
-    events.then(res => {
-      // Empty events if the result is empty
-      if (res === null) {
-        return;
-      }
+    calendar.getAllEventsInInterval(from, to)
+      .then(res => {
+        // Empty events if the result is empty
+        if (res === null) {
+          return;
+        }
 
-      this.setState({
-        events: convertEvents(res),
+        this.setState({
+          events: convertEvents(res),
+        });
       });
-    });
   }
 
   handleSelect = (selectedDate) => {
@@ -61,21 +61,20 @@ export default class CalendarPage extends React.Component {
 
     // all events between the first day and the last day of the
     // selected month
-    const events = calendar.getAllEventsInInterval(from, to);
+    calendar.getAllEventsInInterval(from, to)
+      .then(res => {
+        // Empty events if the result is empty
+        if (res === null) {
+          this.setState({
+            events: [],
+          });
+          return;
+        }
 
-    events.then(res => {
-      // Empty events if the result is empty
-      if (res === null) {
         this.setState({
-          events: [],
+          events: convertEvents(res),
         });
-        return;
-      }
-
-      this.setState({
-        events: convertEvents(res),
       });
-    });
   }
 
   // Refresh the calendar when an event is updated in a child modal/form
@@ -86,21 +85,20 @@ export default class CalendarPage extends React.Component {
 
     // all events between the first day and the last day of the
     // selected month
-    const events = calendar.getAllEventsInInterval(from, to);
+    calendar.getAllEventsInInterval(from, to)
+      .then(res => {
+        // Empty events if the result is empty
+        if (res === null) {
+          this.setState({
+            events: [],
+          });
+          return;
+        }
 
-    events.then(res => {
-      // Empty events if the result is empty
-      if (res === null) {
         this.setState({
-          events: [],
+          events: convertEvents(res),
         });
-        return;
-      }
-
-      this.setState({
-        events: convertEvents(res),
       });
-    });
   }
 
   handleVisibleModalChange = (visible) => {
@@ -118,6 +116,7 @@ export default class CalendarPage extends React.Component {
     if (date.month() !== this.state.selectedDate.month()) {
       return;
     }
+
     const events = this.state.events[date.date()];
 
     // Check if events are fetched

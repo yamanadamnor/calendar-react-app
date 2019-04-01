@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal, List, Button, 
-  message, Popover } from 'antd';
+          message } from 'antd';
 import moment from 'moment';
 
 import EventForm from './EventForm';
+import DeletePopover from './DeletePopover';
 import * as calendar from '../../api/calendar/calendar';
 
 export default class CalendarModal extends React.Component {
@@ -77,11 +78,11 @@ export default class CalendarModal extends React.Component {
           .then(
             this.setState({ buttonLoading: false }),
 
-            // Hides the modal
-            this.props.onVisibleChange(false),
-
             // Refreshes the calendar
             this.props.onEventUpdate(),
+
+            // Hides the modal
+            this.props.onVisibleChange(false),
 
             message.success(`Successfully updated event '${event.name}'!`)
           );
@@ -90,11 +91,11 @@ export default class CalendarModal extends React.Component {
           .then(
             this.setState({ buttonLoading: false }),
 
-            // Hides the modal
-            this.props.onVisibleChange(false),
-
             // Refreshes the calendar
             this.props.onEventUpdate(),
+
+            // Hides the modal
+            this.props.onVisibleChange(false),
 
             message.success(`Successfully created event '${values.name}'!`)
           );
@@ -108,24 +109,17 @@ export default class CalendarModal extends React.Component {
   handleDelete = (event) => {
     calendar.deleteEvent(event.id)
       .then(
-        // Hides the modal
-        this.props.onVisibleChange(false),
-
         // Refreshes the calendar
         this.props.onEventUpdate(),
+
+        // Hides the modal
+        this.props.onVisibleChange(false),
 
         message.success(`Successfully deleted event '${event.name}'!`)
       );
   }
 
   renderEventList() {
-    // TODO: popover currently doesnt hide when confirm button is clicked
-    const popoverContent = (event) => (
-      <Button type="danger" onClick={() => this.handleDelete(event)} block>
-        Confirm
-      </Button>
-    );
-
     // if not empty
     if (this.props.events) {
       return (
@@ -141,17 +135,10 @@ export default class CalendarModal extends React.Component {
                   icon="edit"
                   onClick={() => this.handleEditClick(event)}
                 />,
-                <Popover
-                  content={popoverContent(event)}
-                  title={`Are you sure you want to delete '${event.name}'?`}
-                  trigger="click"
-                >
-                  <Button 
-                    type="danger"
-                    shape="circle"
-                    icon="delete"
-                  />
-                </Popover>
+                <DeletePopover 
+                  onDelete={this.handleDelete}
+                  event={event}
+                />
               ]}
             >
               <List.Item.Meta
@@ -163,7 +150,7 @@ export default class CalendarModal extends React.Component {
         />
       );
     } 
-    return null;
+    return <List />;
   }
 
   render() {
