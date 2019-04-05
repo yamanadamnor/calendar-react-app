@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Input, Modal, List, Button, 
           message } from 'antd';
 import moment from 'moment';
@@ -51,7 +51,6 @@ export default class CalendarModal extends React.Component {
     this.eventFormRef = eventFormRef;
   }
 
-  // TODO: modify to work with both creating and updating (using props?)
   // Handles submit child form
   handleOk = () => {
     const form = this.eventFormRef.props.form;
@@ -75,38 +74,47 @@ export default class CalendarModal extends React.Component {
 
       if (this.props.mode === "update") {
         calendar.updateEvent(event.id, values)
-          .then(
-            this.setState({ buttonLoading: false }),
+          .then(json => {
+            this.setState({ buttonLoading: false });
+
+            if ("error" in json) {
+              message.error('Internal error, please try again!');
+              return;
+            }
 
             // Refreshes the calendar
-            this.props.onEventUpdate(),
+            this.props.onEventUpdate();
 
             // Hides the modal
-            this.props.onVisibleChange(false),
+            this.props.onVisibleChange(false);
 
-            message.success(`Successfully updated event '${event.name}'!`)
-          );
+            message.success(`Successfully updated event '${event.name}'!`);
+          });
       } else {
         calendar.createEvent(values)
-          .then(
-            this.setState({ buttonLoading: false }),
+          .then(json => {
+            this.setState({ buttonLoading: false });
+
+            if ("error" in json) {
+              message.error('Internal error, please try again!');
+              return;
+            }
 
             // Refreshes the calendar
-            this.props.onEventUpdate(),
+            this.props.onEventUpdate();
 
             // Hides the modal
-            this.props.onVisibleChange(false),
+            this.props.onVisibleChange(false);
 
-            message.success(`Successfully created event '${values.name}'!`)
-          );
+            message.success(`Successfully created event '${values.name}'!`);
+          });
       }
+      // Clear fields when done
+      form.resetFields();
     });
-
-    // Clear fields when done
-    form.resetFields();
   }
 
-  handleDelete = (event) => {
+  handleDelete = event => {
     calendar.deleteEvent(event.id)
       .then(json => {
         if ("error" in json) {
@@ -121,7 +129,6 @@ export default class CalendarModal extends React.Component {
         this.props.onVisibleChange(false);
 
         message.success(`Successfully deleted event '${event.name}'!`);
-        
       });
   }
 
@@ -182,6 +189,7 @@ export default class CalendarModal extends React.Component {
     const createFooter = [
       <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
       <Button 
+        form="event-form"
         key="submit"
         type="primary"
         onClick={this.handleOk}

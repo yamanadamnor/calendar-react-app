@@ -49,15 +49,17 @@ class EventForm extends React.Component {
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             initialValue: name,
+            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!' }],
           })(
-            <Input type="text" />
+            <Input type="text" placeholder="Input a name" />
           )}
         </Form.Item>
         <Form.Item label="Description">
           {getFieldDecorator('description', {
             initialValue: description,
+            rules: [{ max: 200, message: 'Description cannot be more than 200 characters!' }],
           })(
-            <Input.TextArea rows={4} />
+            <Input.TextArea rows={4} placeholder="Input a description" />
           )}
         </Form.Item>
         <Row>

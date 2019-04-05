@@ -1,77 +1,62 @@
 import React from 'react';
-import { Form, Input, DatePicker, Row, Col } from 'antd';
+import { Form, Input, InputNumber, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 
 class TaskForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedEnd: null,
-    }
-  }
-
   createMoment = (dateStr) => {
     const d = new Date(dateStr);
     return moment(d);
   }
 
-  disabledEndDate = endValue => {
-    if (this.state.selectedStart !== null) {
-      return endValue.valueOf() <= this.state.selectedStart.valueOf();
-    }
+  disabledDeadlineDate = endValue => {
     return endValue.valueOf() <= moment().valueOf();
-  }
-
-  onEndChange = value => {
-    this.setState({ selectedEnd: value });
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const name = this.props.mode === "update" ? this.props.event.name : "";
-    const description = this.props.mode === "update" ? this.props.event.description : "";
-    const ends_at = this.props.mode === "update" ? 
-      this.createMoment(this.props.event.ends_at) : moment().add(1, 'hour');
+    const name = this.props.mode === "update" ? this.props.task.name : "";
+    const description = this.props.mode === "update" ? this.props.task.description : "";
+    const deadline = this.props.mode === "update" ? 
+      this.createMoment(this.props.task.deadline) : null;
+    const hours = this.props.mode === "update" ? this.props.task.hours : null;
 
     return (
       <Form id="task-form">
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             initialValue: name,
+            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!' }],
           })(
-            <Input type="text" />
+            <Input type="text" placeholder="Input a name" />
           )}
         </Form.Item>
         <Form.Item label="Description">
           {getFieldDecorator('description', {
             initialValue: description,
+            rules: [{ max: 200, message: 'Description cannot be more than 200 characters!' }],
           })(
-            <Input.TextArea rows={4} />
+            <Input.TextArea rows={4} placeholder="Input a description" />
           )}
         </Form.Item>
         <Row>
           <Col span={12}>
-            <Form.Item>
-              {getFieldDecorator('ends_at_date', {
-                initialValue: ends_at,
-                setFieldsValue: this.state.selectedEnd,
+            <Form.Item label="Deadline">
+              {getFieldDecorator('deadline', {
+                initialValue: deadline,
               })(
                 <DatePicker 
-                  disabledDate={this.disabledEndDate}
-                  onChange={this.onEndChange}
+                  disabledDate={this.disabledDeadlineDate}
+                  placeholder="Select deadline date"
                 />
               )}
             </Form.Item>
           </Col>
           <Col span={8} offset={2}>
-            <Form.Item>
-              {getFieldDecorator('ends_at_time', {
-                initialValue: ends_at,
+            <Form.Item label="Total hours">
+              {getFieldDecorator('hours', {
+                initialValue: hours,
               })(
-                <TimePicker
-                  use12Hours
-                  format={'h:mm A'}
-                />
+                <InputNumber min={1} placeholder="Input hours" />
               )}
             </Form.Item>
           </Col>
