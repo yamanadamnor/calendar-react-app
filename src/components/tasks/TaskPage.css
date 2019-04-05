@@ -1,0 +1,14 @@
+/* Overrides */
+.header-tasks {
+  padding: 0 25px !important;
+}
+
+.header-tasks .back-btn {
+  border: 0px !important;
+}
+
+.header-tasks .layout-title {
+  color: white;
+  margin-left: 1em;
+  font-size: 1.1em;
+}

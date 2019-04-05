@@ -6,6 +6,7 @@ import Media from 'react-media';
 import CalendarModal from './CalendarModal';
 import * as calendar from '../../api/calendar/calendar';
 import * as account from '../../api/account/account';
+import history from '../history'; 
 import './CalendarPage.css';
 
 export default class CalendarPage extends React.Component {
@@ -161,6 +162,9 @@ export default class CalendarPage extends React.Component {
       case "day":
         console.log("day");
         break;
+      case "tasks":
+        history.push("/tasks");
+        break;
       case "settings":
         console.log("settings");
         break;
@@ -210,6 +214,10 @@ export default class CalendarPage extends React.Component {
                 <Menu.Item key="day">
                   <Icon type="calendar" />
                   <span className="nav-text">Day</span>
+                </Menu.Item>
+                <Menu.Item key="tasks">
+                  <Icon type="ordered-list" />
+                  <span className="nav-text">Tasks</span>
                 </Menu.Item>
                 <Menu.Item key="settings">
                   <Icon type="setting" />

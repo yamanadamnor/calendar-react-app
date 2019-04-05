@@ -1,31 +1,40 @@
 import React from 'react';
-import { Form, Input, DatePicker, TimePicker, Row, Col } from 'antd';
+import { Form, Input, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 
-class EventForm extends React.Component {
+class TaskForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      selectedEnd: null,
     }
   }
+
   createMoment = (dateStr) => {
     const d = new Date(dateStr);
     return moment(d);
   }
 
-  // TODO: rules, errors, dates before now etc
+  disabledEndDate = endValue => {
+    if (this.state.selectedStart !== null) {
+      return endValue.valueOf() <= this.state.selectedStart.valueOf();
+    }
+    return endValue.valueOf() <= moment().valueOf();
+  }
+
+  onEndChange = value => {
+    this.setState({ selectedEnd: value });
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const name = this.props.mode === "update" ? this.props.event.name : "";
     const description = this.props.mode === "update" ? this.props.event.description : "";
-    const starts_at = this.props.mode === "update" ? 
-      this.createMoment(this.props.event.starts_at) : moment();
     const ends_at = this.props.mode === "update" ? 
       this.createMoment(this.props.event.ends_at) : moment().add(1, 'hour');
 
     return (
-      <Form id="event-form">
+      <Form id="task-form">
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             initialValue: name,
@@ -43,35 +52,14 @@ class EventForm extends React.Component {
         <Row>
           <Col span={12}>
             <Form.Item>
-              { /* TODO: disable dates/time before current date/time */ }
-              {getFieldDecorator('starts_at_date', {
-                initialValue: starts_at,
-              })(
-                <DatePicker />
-            )}
-            </Form.Item>
-          </Col>
-          <Col span={8} offset={2}>
-            <Form.Item>
-              {getFieldDecorator('starts_at_time', {
-                initialValue: starts_at,
-              })(
-                <TimePicker
-                  use12Hours
-                  format={'h:mm A'}
-                />
-              )}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
-          { /* TODO: disable dates/time before current date/time */ }
-          <Col span={12}>
-            <Form.Item>
               {getFieldDecorator('ends_at_date', {
                 initialValue: ends_at,
+                setFieldsValue: this.state.selectedEnd,
               })(
-                <DatePicker />
+                <DatePicker 
+                  disabledDate={this.disabledEndDate}
+                  onChange={this.onEndChange}
+                />
               )}
             </Form.Item>
           </Col>
@@ -93,4 +81,4 @@ class EventForm extends React.Component {
   }
 }
 
-export default EventForm = Form.create({})(EventForm);
+export default TaskForm = Form.create({})(TaskForm);

@@ -108,15 +108,21 @@ export default class CalendarModal extends React.Component {
 
   handleDelete = (event) => {
     calendar.deleteEvent(event.id)
-      .then(
+      .then(json => {
+        if ("error" in json) {
+          message.error('Internal error, please refresh and try again!');
+          return;
+        }
+
         // Refreshes the calendar
-        this.props.onEventUpdate(),
+        this.props.onEventUpdate();
 
         // Hides the modal
-        this.props.onVisibleChange(false),
+        this.props.onVisibleChange(false);
 
-        message.success(`Successfully deleted event '${event.name}'!`)
-      );
+        message.success(`Successfully deleted event '${event.name}'!`);
+        
+      });
   }
 
   renderEventList() {
@@ -137,7 +143,7 @@ export default class CalendarModal extends React.Component {
                 />,
                 <DeletePopover 
                   onDelete={this.handleDelete}
-                  event={event}
+                  item={event}
                 />
               ]}
             >
@@ -176,7 +182,6 @@ export default class CalendarModal extends React.Component {
     const createFooter = [
       <Button key="cancel" onClick={this.handleCancel}>Cancel</Button>,
       <Button 
-        form="event-form"
         key="submit"
         type="primary"
         onClick={this.handleOk}
@@ -187,12 +192,12 @@ export default class CalendarModal extends React.Component {
 
     return (
       <Modal
-        title={this.props.mode === "create" ? "Create new event" 
+        title={this.props.mode === "create" ? "Create new event"
             : this.props.date.format("dddd Do MMM")}
         visible={this.props.visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
-        footer={this.props.mode === "update" ? editFooter : 
+        footer={this.props.mode === "update" ? editFooter :
             this.props.mode === "create" ? createFooter : null}
       >
         {this.props.mode === "list" ? this.renderEventList() : eventForm}

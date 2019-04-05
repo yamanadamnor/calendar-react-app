@@ -50,5 +50,5 @@ export async function validateLoggedIn() {
 
   const data = await response.json();
 
-  return (("error" in data) ? false : true);
+  return !("error" in data);
 }

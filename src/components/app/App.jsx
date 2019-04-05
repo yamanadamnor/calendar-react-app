@@ -7,6 +7,7 @@ import WelcomePage from '../app/WelcomePage';
 import RegisterPage from '../auth/register/RegisterPage';
 import LoginPage from '../auth/login/LoginPage';
 import CalendarPage from '../calendar/CalendarPage';
+import TaskPage from '../tasks/TaskPage';
 import history from '../history';
 import './App.css';
 
@@ -50,9 +51,14 @@ export default class App extends React.Component {
               <div className="route-wrapper">
                 <Switch location={location}>
                   <Route exact path="/" render={() => this.state.loggedIn ? 
-                      <CalendarPage onLogout={this.handleLogout} /> : <WelcomePage />} />
+                    <CalendarPage onLogout={this.handleLogout} /> : <WelcomePage />} />
                   <Route path="/register" render={() => <RegisterPage onLogin={this.handleLogin} />} />
                   <Route path="/login" render={() => <LoginPage onLogin={this.handleLogin} />} />
+
+                  {/* Protected routes */}
+                  {this.state.loggedIn && (
+                    <Route path="/tasks" component={TaskPage} />
+                  )}
                 </Switch>
               </div>
             </CSSTransition>

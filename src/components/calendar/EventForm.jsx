@@ -35,7 +35,6 @@ class EventForm extends React.Component {
     this.setState({ selectedEnd: value });
   }
 
-  // TODO: rules, errors, dates before now etc
   render() {
     const { getFieldDecorator } = this.props.form;
     const name = this.props.mode === "update" ? this.props.event.name : "";
@@ -64,7 +63,6 @@ class EventForm extends React.Component {
         <Row>
           <Col span={12}>
             <Form.Item>
-              { /* TODO: disable dates/time before current date/time */ }
               {getFieldDecorator('starts_at_date', {
                 initialValue: starts_at,
                 setFieldsValue: this.state.selectedStart,
@@ -90,7 +88,6 @@ class EventForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          { /* TODO: disable dates/time before current date/time */ }
           <Col span={12}>
             <Form.Item>
               {getFieldDecorator('ends_at_date', {

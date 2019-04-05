@@ -13,17 +13,17 @@ export default class DeletePopover extends React.Component {
     this.setState({ visible });
   }
 
-  handleDelete = (event) => {
-    this.props.onDelete(event);
+  handleDelete = (item) => {
+    this.props.onDelete(item);
     this.handleVisibility(false);
   }
 
   render() {
     // TODO: popover currently doesnt hide when confirm button is clicked
-    const popoverContent = (event) => (
+    const popoverContent = (item) => (
       <Button 
         type="danger" 
-        onClick={() => this.handleDelete(event)} 
+        onClick={() => this.handleDelete(item)} 
         disabled={!this.state.visible}
         block>
         Confirm
@@ -32,8 +32,8 @@ export default class DeletePopover extends React.Component {
 
     return(
       <Popover
-        content={popoverContent(this.props.event)}
-        title={`Are you sure you want to delete '${this.props.event.name}'?`}
+        content={popoverContent(this.props.item)}
+        title={`Are you sure you want to delete '${this.props.item.name}'?`}
         trigger="click"
         visible={this.state.visible}
         onVisibleChange={this.handleVisibility}
