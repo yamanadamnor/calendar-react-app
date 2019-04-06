@@ -22,6 +22,7 @@ export default class CalendarPage extends React.Component {
   }
 
   componentDidMount() {
+    document.title = "PlannerOwO | Calendar"
     const d = new Date(), y = d.getFullYear(), m = d.getMonth();
     const from = new Date(y, m, 1);
     const to = new Date(y, m +1, 1);
@@ -130,7 +131,9 @@ export default class CalendarPage extends React.Component {
         {
           events.map(event => (
             <li key={event.name}>
-              <Badge status="success" text={event.name} />
+              {event.task_id !== 0 ?
+                <Badge color="orange" text={event.name} /> :
+                <Badge color="purple" text={event.name} /> }
             </li>
           ))
         }

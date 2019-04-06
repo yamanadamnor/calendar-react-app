@@ -29,7 +29,7 @@ export default class CalendarModal extends React.Component {
   renderModalTitle = (start, end, title) => {
     // TODO: check time zone conversion between server and client
     const sd = new Date(start), ed = new Date(end);
-    const s = moment(sd).format('LT'), e = moment(ed).format('LT');
+    const s = moment(sd).calendar(), e = moment(ed).calendar();
 
     return (
       <div>

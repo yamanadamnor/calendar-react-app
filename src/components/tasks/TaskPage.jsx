@@ -20,9 +20,10 @@ export default class TaskPage extends React.Component {
   }
 
   componentDidMount() {
+    document.title = "PlannerOwO | Tasks"
     tasks.getAllTasks()
-      .then(res => {
-        this.setState({ tasks: res })
+      .then(tasks => {
+        this.setState({ tasks })
       });
   }
 
