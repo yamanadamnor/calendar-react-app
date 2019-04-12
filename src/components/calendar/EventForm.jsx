@@ -49,7 +49,8 @@ class EventForm extends React.Component {
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             initialValue: name,
-            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!' }],
+            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!'}, 
+              { required: true, message: 'Name cannot be empty!' }]
           })(
             <Input type="text" placeholder="Input a name" />
           )}
@@ -57,7 +58,7 @@ class EventForm extends React.Component {
         <Form.Item label="Description">
           {getFieldDecorator('description', {
             initialValue: description,
-            rules: [{ max: 200, message: 'Description cannot be more than 200 characters!' }],
+            rules: [{ max: 200, message: 'Description cannot be more than 200 characters!' }]
           })(
             <Input.TextArea rows={4} placeholder="Input a description" />
           )}
@@ -68,6 +69,7 @@ class EventForm extends React.Component {
               {getFieldDecorator('starts_at_date', {
                 initialValue: starts_at,
                 setFieldsValue: this.state.selectedStart,
+                rules: [{ required: true, message: "Start date cannot be empty!" }]
               })(
                 <DatePicker 
                   disabledDate={this.disabledStartDate}
@@ -80,6 +82,7 @@ class EventForm extends React.Component {
             <Form.Item>
               {getFieldDecorator('starts_at_time', {
                 initialValue: starts_at,
+                rules: [{ required: true, message: "Start time cannot be empty!" }]
               })(
                 <TimePicker
                   use12Hours
@@ -95,6 +98,7 @@ class EventForm extends React.Component {
               {getFieldDecorator('ends_at_date', {
                 initialValue: ends_at,
                 setFieldsValue: this.state.selectedEnd,
+                rules: [{ required: true, message: "End date cannot be empty!" }]
               })(
                 <DatePicker 
                   disabledDate={this.disabledEndDate}
@@ -107,6 +111,7 @@ class EventForm extends React.Component {
             <Form.Item>
               {getFieldDecorator('ends_at_time', {
                 initialValue: ends_at,
+                rules: [{ required: true, message: "End time cannot be empty!" }]
               })(
                 <TimePicker
                   use12Hours

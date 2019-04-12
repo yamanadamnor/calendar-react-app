@@ -25,7 +25,8 @@ class TaskForm extends React.Component {
         <Form.Item label="Name">
           {getFieldDecorator('name', {
             initialValue: name,
-            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!' }],
+            rules: [{ max: 100, message: 'Name cannot be more than 100 characters!'}, 
+            { required: true, message: "Name cannot be empty!" }],
           })(
             <Input type="text" placeholder="Input a name" />
           )}
@@ -43,6 +44,7 @@ class TaskForm extends React.Component {
             <Form.Item label="Deadline">
               {getFieldDecorator('deadline', {
                 initialValue: deadline,
+                rules: [{ required: true, message: "Deadline cannot be empty!" }]
               })(
                 <DatePicker 
                   disabledDate={this.disabledDeadlineDate}
@@ -55,6 +57,7 @@ class TaskForm extends React.Component {
             <Form.Item label="Total hours">
               {getFieldDecorator('hours', {
                 initialValue: hours,
+                rules: [{ required: true, message: "Total hours cannot be empty!" }]
               })(
                 <InputNumber min={1} placeholder="Input hours" />
               )}

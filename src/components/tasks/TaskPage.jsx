@@ -23,6 +23,11 @@ export default class TaskPage extends React.Component {
     document.title = "PlannerOwO | Tasks"
     tasks.getAllTasks()
       .then(tasks => {
+        // Empty tasks if the result is empty
+        if (tasks === null) {
+          return;
+        }
+
         this.setState({ tasks })
       });
   }
