@@ -10,7 +10,7 @@
     "react-media": "^1.9.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
-    "react-transition-group-v2": "^2.4.0"
+    "react-spring": "^8.0.19",
   },
   "scripts": {
     "start": "react-app-rewired start",
