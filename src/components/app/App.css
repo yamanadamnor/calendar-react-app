@@ -1,3 +1,13 @@
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100vw;
+  padding: 20px 40px;
+  height: 100vh;
+}
+
 .route-wrapper {
   position: absolute;
   width: 100%;

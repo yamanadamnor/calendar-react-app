@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group-v2';
+import { Transition, config } from 'react-spring/renderprops';
 
 import * as account from '../../api/account/account';
 import WelcomePage from '../app/WelcomePage';
+import SetupPage from '../app/SetupPage';
 import RegisterPage from '../auth/register/RegisterPage';
 import LoginPage from '../auth/login/LoginPage';
 import CalendarPage from '../calendar/CalendarPage';
@@ -16,6 +18,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       loggedIn: false,
+      newUser: true,
     }
   }
 
@@ -28,7 +31,13 @@ export default class App extends React.Component {
     this.setState({
       loggedIn: true,
     });
-    history.push('/');
+    account.getAllSettings()
+      .then(res => {
+        if (res.length == 0) {
+          this.setState({ newUser: true });
+        }
+        history.push('/');
+      });
   }
 
   handleLogout= () => {
@@ -42,27 +51,30 @@ export default class App extends React.Component {
     return (
       <Router history={history}>
         <Route render={({location}) => (
-          <TransitionGroup>
-            <CSSTransition
-              key={location.key}
-              timeout={{ enter: 300, exit: 300 }}
-              classNames={'fade'}
+            <Transition
+              native
+              config={config.slow}
+              keys={location.pathname}
+              items={location}
+              from={{ position: 'absolute', opacity: 0 }}
+              enter={{ position: 'absolute', opacity: 1 }}
+              leave={{ position: 'absolute', opacity: 0 }}
             >
-              <div className="route-wrapper">
-                <Switch location={location}>
-                  <Route exact path="/" render={() => this.state.loggedIn ? 
-                    <CalendarPage onLogout={this.handleLogout} /> : <WelcomePage />} />
-                  <Route path="/register" render={() => <RegisterPage onLogin={this.handleLogin} />} />
-                  <Route path="/login" render={() => <LoginPage onLogin={this.handleLogin} />} />
+              {(loc, state) => style => (
+                <Switch location={state === 'update' ? location : loc}>
+                  <Route exact path="/" render={() => this.state.newUser ? <SetupPage style={style} /> : 
+                      this.state.loggedIn ? <CalendarPage onLogout={this.handleLogout} style={style} /> : 
+                      <WelcomePage style={style} />} />
+                  <Route path="/register" render={() => <RegisterPage style={style} onLogin={this.handleLogin} />} />
+                  <Route path="/login" render={() => <LoginPage style={style} onLogin={this.handleLogin} />} />
 
                   {/* Protected routes */}
                   {this.state.loggedIn && (
-                    <Route path="/tasks" component={TaskPage} />
+                    <Route path="/tasks" render={() => <TaskPage style={style} />} />
                   )}
                 </Switch>
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
+              )}
+            </Transition>
         )} />
       </Router>
     );

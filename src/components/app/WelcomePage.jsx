@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import { animated } from 'react-spring/renderprops';
 
 import history from '../history'; 
 import './WelcomePage.css';
@@ -11,8 +12,7 @@ export default class WelcomePage extends React.Component {
 
   render() {
     return (
-      <div className="container container-welcome">
-        <div className="bg"></div>
+      <animated.div style={this.props.style} className="container container-welcome">
         <div className="title-container">
           <h1 className="welcome">PlannerOwO</h1>
           <p className="welcome">Revolutionizing the way of planning</p>
@@ -25,7 +25,7 @@ export default class WelcomePage extends React.Component {
             onClick={() => this.handleLinkClick('/login')} className="btn-custom" type="default"
           >Login</Button>
         </div>
-      </div>
+      </animated.div>
     )
   }
 }

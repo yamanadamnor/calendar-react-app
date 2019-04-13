@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, Badge, Button, Layout, Menu, Icon } from 'antd';
+import { animated } from 'react-spring/renderprops';
 import moment from 'moment';
 import Media from 'react-media';
 
@@ -182,7 +183,7 @@ export default class CalendarPage extends React.Component {
     const { events, selectedDate, value, modalVisible, modalMode } = this.state;
     const { Header, Footer, Sider, Content } = Layout;
     return (
-      <div>
+      <animated.div style={this.props.style}>
         <Layout style={{ minHeight: "100vh" }}>
           <Media query="(max-width: 992px)">
             <Header className="header-calendar" breakpoint="lg">
@@ -263,7 +264,7 @@ export default class CalendarPage extends React.Component {
           className="create-event-btn-calendar"
           onClick={this.handleCreateClick}
         />
-      </div>
+      </animated.div>
     );
   }
 }

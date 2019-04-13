@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Layout, Menu, Icon, List, message } from 'antd';
+import { animated } from 'react-spring/renderprops';
 import moment from 'moment'; 
 
 import DeletePopover from '../calendar/DeletePopover';
@@ -87,7 +88,7 @@ export default class TaskPage extends React.Component {
     const { Header, Content } = Layout;
     const { editingTask, modalVisible, modalMode } = this.state;
     return (
-      <div>
+      <animated.div style={{...this.props.style, width: "100%" }}>
         <Layout style={{ minHeight: "100vh" }}>
           <Header className="header-tasks">
             <Button 
@@ -142,7 +143,7 @@ export default class TaskPage extends React.Component {
           className="create-task-btn-tasks"
           onClick={this.handleCreateClick}
         />
-      </div>
+      </animated.div>
     );
   }
 }

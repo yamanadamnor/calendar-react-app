@@ -52,3 +52,15 @@ export async function validateLoggedIn() {
 
   return !("error" in data);
 }
+
+export function getAllSettings() {
+  return fetch("http://localhost:8000/api/account/settings/", {
+    method: "GET",
+    mode: "cors",
+    credentials: "include",
+    headers: {
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error));
+}

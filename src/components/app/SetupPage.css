@@ -1,0 +1,13 @@
+.container-setup {
+  background-color: var(--color-secondary);
+}
+
+.choice-btn-setup {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.choice-btn-row-setup {
+  box-sizing: border-box;
+  padding: 0.5em;
+}
