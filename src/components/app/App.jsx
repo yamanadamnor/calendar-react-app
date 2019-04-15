@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group-v2';
 import { Transition, config } from 'react-spring/renderprops';
 
 import * as account from '../../api/account/account';
@@ -18,7 +17,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       loggedIn: false,
-      newUser: true,
+      newUser: false,
     }
   }
 
@@ -40,9 +39,16 @@ export default class App extends React.Component {
       });
   }
 
-  handleLogout= () => {
+  handleLogout = () => {
     this.setState({
       loggedIn: false,
+    });
+    history.push('/');
+  }
+
+  handleSetup = () => {
+    this.setState({
+      newUser: false,
     });
     history.push('/');
   }
@@ -62,9 +68,10 @@ export default class App extends React.Component {
             >
               {(loc, state) => style => (
                 <Switch location={state === 'update' ? location : loc}>
-                  <Route exact path="/" render={() => this.state.newUser ? <SetupPage style={style} /> : 
-                      this.state.loggedIn ? <CalendarPage onLogout={this.handleLogout} style={style} /> : 
-                      <WelcomePage style={style} />} />
+                  <Route exact path="/" render={() => 
+                    this.state.newUser ? <SetupPage style={style} onFinish={this.handleSetup} /> : 
+                    this.state.loggedIn ? <CalendarPage onLogout={this.handleLogout} style={style} /> : 
+                    <WelcomePage style={style} />} />
                   <Route path="/register" render={() => <RegisterPage style={style} onLogin={this.handleLogin} />} />
                   <Route path="/login" render={() => <LoginPage style={style} onLogin={this.handleLogin} />} />
 

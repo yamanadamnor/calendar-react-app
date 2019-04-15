@@ -180,7 +180,7 @@ export default class CalendarPage extends React.Component {
   }
 
   render() {
-    const { events, selectedDate, value, modalVisible, modalMode } = this.state;
+    const { events, selectedDate, menuCollapsed, modalVisible, modalMode } = this.state;
     const { Header, Footer, Sider, Content } = Layout;
     return (
       <animated.div style={this.props.style}>
@@ -200,7 +200,7 @@ export default class CalendarPage extends React.Component {
             <Sider
               breakpoint="lg"
               collapsedWidth="0"
-              collapsed={this.state.menuCollapsed}
+              collapsed={menuCollapsed}
               onBreakpoint={this.handleMenuBreakpoint}
               theme="dark"
               trigger={null}

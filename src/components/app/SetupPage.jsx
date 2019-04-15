@@ -1,97 +1,129 @@
 import React from 'react';
 import { Transition, config, animated } from 'react-spring/renderprops';
-import { Button, Row, Col } from 'antd';
+import { Button, Row, Col, Progress } from 'antd';
 
 import './SetupPage.css';
+import * as account from '../../api/account/account';
 
 export default class SetupPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       progress: 0, 
+      questions: [
+        {
+          id: 0,
+          title: "Welcome to PlannerOwO!",
+          options: ["Click here to get started!"],
+        },
+        {
+          id: 1,
+          title: "At what time do you prefer to work?",
+          options: ["Morning", "Daytime", "Afternoon", "Evening"],
+          answers: ["morning", "daytime", "afternoon", "evening"],
+        },
+        {
+          id: 2,
+          title: "What is your preferred way of working?",
+          options: ["Long but few sessions", "Short but many sessions"],
+          answers: ["long", "short"]
+        },
+      ],
+      answers: {
+        "preferred_time": "",
+        "preferred_length": "",
+      },
     }
   }
 
   incrementProgress = (e) => {
-    console.log(e.target.textContent);
-    this.setState({ progress: this.state.progress + 1 })
+    // Only increment if on first page
+    if (this.state.progress === 0) {
+      this.setState({ progress: this.state.progress + 1 });
+      return;
+    }
+
+    const questions = [
+      "preferred_time", "preferred_length",
+    ];
+    const key = questions[this.state.progress - 1];
+    const curQuestion = this.state.questions[this.state.progress];
+    const answer = curQuestion.answers[curQuestion.options.indexOf(e.target.textContent)];
+
+    this.setState(prevState => ({ 
+      // Add the new answer to the object
+      answers: {
+        ...prevState.answers,
+        [key]: answer,
+      }
+    }), () => {
+      // Submit on last question
+      const newKey = questions[this.state.progress - 1];
+      if (this.state.progress === questions.length && this.state.answers[newKey] !== "") {
+        account.updateAllSettings(this.state.answers)
+          .then(this.props.onFinish);
+      }
+    });
+
+    // Only increase progress as long as there are questions left
+    if (this.state.progress < questions.length) {
+      this.setState({ progress: this.state.progress + 1 });
+    }
   }
 
+  decrementProgress = (e) => {
+    this.setState({ progress: this.state.progress - 1 });
+  }
 
   render() {
-    const Page0 =
-      <div className="container container-setup">
-        <h1 style={{ textAlign: "center", color: "white" }}>Welcome to PlannerOwO!</h1>
-        <Button size={"large"} onClick={this.incrementProgress}>
-          Click here to get started!
-        </Button>
-      </div>;
-
-    const Page1 =
-      <div className="container container-setup">
-        <h1 style={{ textAlign: "center", color: "white" }}>At what time do you prefer to work?</h1>
-        <Row type="flex" justify="center">
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Morning
-            </Button>
-          </Col>
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Daytime
-            </Button>
-          </Col>
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Afternoon
-            </Button>
-          </Col>
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Evening
-            </Button>
-          </Col>
-        </Row>
-      </div>;
-
-    const Page2 =
-      <div className="container container-setup">
-        <h1 style={{ textAlign: "center", color: "white" }}>What is your preferred way of working?</h1>
-        <Row type="flex" justify="center">
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Long but few sessions 
-            </Button>
-          </Col>
-          <Col className="choice-btn-row-setup" xs={24} lg={12}>
-            <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
-              Short but many sessions
-            </Button>
-          </Col>
-        </Row>
-      </div>;
-
-    const pages = [Page0, Page1, Page2];
+    const { questions } = this.state;
 
     return (
-      <animated.div style={{ ...this.props.style, minHeight: "100vh" }}>
+      <div className="setup-page">
         <Transition
           native
           config={config.slow}
-          items={pages}
+          items={questions[this.state.progress]}
           keys={this.state.progress}
           from={{ position: 'absolute', opacity: 0 }}
           enter={{ position: 'absolute', opacity: 1 }}
           leave={{ position: 'absolute', opacity: 0 }}
         >
-          {page => style => (
-            <animated.div style={{ position: 'absolute', ...style }}>
-              {pages[this.state.progress]}
+          {question => style => (
+            <animated.div style={style} className="container container-setup">
+              {question.id !== 0 && (
+                <Button 
+                  icon="arrow-left"
+                  ghost="true"
+                  className="back-btn-setup"
+                  size="large"
+                  onClick={this.decrementProgress} />
+              )}
+              <h1 style={{ textAlign: "center", color: "white" }}>{question.title}</h1>
+              <Row key={question.id} type="flex" justify="center">
+                {question.options.map(option => {
+                  {/* fix lonely button lg breakpoint */}
+                  return (
+                    <Col key={option} className="choice-btn-row-setup" xs={24} lg={12}>
+                      <Button className="choice-btn-setup" size={"large"} onClick={this.incrementProgress}>
+                        {option}
+                      </Button>
+                    </Col>
+                  );
+                })}
+              </Row>
             </animated.div>
           )}
         </Transition>
-      </animated.div>
+        {this.state.progress > 0 && (
+          <Progress 
+            strokeColor={{ from: '#FFFFFF', to: '#DAB6FC' }}
+            strokeLinecap="square"
+            percent={100 / Object.keys(this.state.answers).length * (this.state.progress)} 
+            format={() => `${this.state.progress}/${Object.keys(this.state.answers).length}`}
+            style={{ position: "absolute", bottom: "10px", boxSizing: "border-box" }}/>
+        )}
+      </div>
     );
   }
 }
-

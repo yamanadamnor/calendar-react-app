@@ -64,3 +64,17 @@ export function getAllSettings() {
   }).then(res => res.json())
     .catch(error => console.error("Error:", error));
 }
+
+export function updateAllSettings(answers) {
+  return fetch("http://localhost:8000/api/account/settings/", {
+    method: "POST",
+    mode: "cors",
+    body: JSON.stringify(answers),
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error));
+}

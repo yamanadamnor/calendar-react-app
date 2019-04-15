@@ -1,13 +1,30 @@
+/* Overrides */
+.setup-page .ant-progress-text {
+  color: white;
+}
+
 .container-setup {
   background-color: var(--color-secondary);
+  background: linear-gradient(var(--color-tertiary), var(--color-secondary));
 }
 
 .choice-btn-setup {
   box-sizing: border-box;
+  display: block;
   width: 100%;
 }
 
 .choice-btn-row-setup {
   box-sizing: border-box;
   padding: 0.5em;
+}
+
+.back-btn-setup {
+  position: absolute; 
+  margin: 10px;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  border: 0px;
+  font-size: 24px;
 }
