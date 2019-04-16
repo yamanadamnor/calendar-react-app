@@ -89,6 +89,9 @@ export default class CalendarModal extends React.Component {
             this.props.onVisibleChange(false);
 
             message.success(`Successfully updated event '${event.name}'!`);
+
+            // Clear fields when done
+            form.resetFields();
           });
       } else {
         calendar.createEvent(values)
@@ -107,10 +110,11 @@ export default class CalendarModal extends React.Component {
             this.props.onVisibleChange(false);
 
             message.success(`Successfully created event '${values.name}'!`);
+
+            // Clear fields when done
+            form.resetFields();
           });
       }
-      // Clear fields when done
-      form.resetFields();
     });
   }
 

@@ -50,6 +50,9 @@ export default class CalendarModal extends React.Component {
             this.props.onVisibleChange(false);
 
             message.success(`Successfully updated task '${task.name}'!`);
+
+            // Clear fields when done
+            form.resetFields();
           });
       } else {
         tasks.createTask(values)
@@ -68,10 +71,11 @@ export default class CalendarModal extends React.Component {
             this.props.onVisibleChange(false);
 
             message.success(`Successfully created task '${values.name}'!`);
+
+            // Clear fields when done
+            form.resetFields();
           });
       }
-      // Clear fields when done
-      form.resetFields();
     });
   }
 

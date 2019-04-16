@@ -6,6 +6,7 @@ import moment from 'moment';
 import DeletePopover from '../calendar/DeletePopover';
 import TaskModal from './TaskModal'
 import * as tasks from '../../api/tasks/tasks';
+import * as calendar from '../../api/calendar/calendar';
 import history from '../history'; 
 import './TaskPage.css';
 
@@ -82,6 +83,12 @@ export default class TaskPage extends React.Component {
 
   handleVisibleModalChange = (visible) => {
     this.setState({ modalVisible: visible })
+  }
+
+  determineTaskProgress = (id) => {
+    // TODO: get all events connected to param id
+    // then compare all end dates to the current date to determine
+    // progress
   }
 
   render() {
