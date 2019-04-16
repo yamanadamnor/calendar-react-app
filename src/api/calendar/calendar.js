@@ -31,6 +31,20 @@ export function getAllEvents() {
     .catch(error => console.error("Error:", error));
 }
 
+export function getAllEventsByTaskId(taskId) {
+  const url = `http://localhost:8000/api/calendar/events/task_id/${taskId}`
+
+  return fetch(url, {
+    method: "GET",
+    mode: "cors",
+    credentials: "include",
+    headers: {
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error));
+}
+
 // event is an object
 export function createEvent(event) {
   return fetch('http://localhost:8000/api/calendar/event/', {

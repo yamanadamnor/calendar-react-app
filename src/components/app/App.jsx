@@ -32,7 +32,7 @@ export default class App extends React.Component {
     });
     account.getAllSettings()
       .then(res => {
-        if (res.length == 0) {
+        if (res.length === 0) {
           this.setState({ newUser: true });
         }
         history.push('/');

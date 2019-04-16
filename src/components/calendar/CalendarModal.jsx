@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Input, Modal, List, Button, 
-          message } from 'antd';
+import { Modal, List, Button, message } from 'antd';
 import moment from 'moment';
 
 import EventForm from './EventForm';

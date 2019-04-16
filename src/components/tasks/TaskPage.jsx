@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Layout, Menu, Icon, List, message } from 'antd';
+import { Button, Layout, List, message, Progress } from 'antd';
 import { animated } from 'react-spring/renderprops';
 import moment from 'moment'; 
 
@@ -18,6 +18,7 @@ export default class TaskPage extends React.Component {
       modalMode: "", // should be either "update" or "create", could prob use enum
       editingTask: moment(),
       tasks: [],
+      progress: [],
     }
   }
 
@@ -30,8 +31,36 @@ export default class TaskPage extends React.Component {
           return;
         }
 
-        this.setState({ tasks })
+        this.setState({ tasks }, () => {
+          // Calculate task progress when all tasks are fetched
+          this.determineTaskProgress(this.state.tasks);
+        });
       });
+  }
+
+  determineTaskProgress = (tasks) => {
+    tasks.map(task => {
+      calendar.getAllEventsByTaskId(task.id)
+        .then(events => {
+          if (events === null) {
+            return;
+          }
+
+          let completed = 0;
+          events.forEach(event => {
+            if (moment(event.ends_at).valueOf() < moment().valueOf()) {
+              completed++;
+            }
+          });
+
+          this.setState(prevState => ({ 
+            progress: {
+              ...prevState.progress,
+              [task.id]: Math.round(completed/events.length * 100),
+            }
+          }));
+        });
+    });
   }
 
   handleCreateClick = e => {
@@ -85,15 +114,10 @@ export default class TaskPage extends React.Component {
     this.setState({ modalVisible: visible })
   }
 
-  determineTaskProgress = (id) => {
-    // TODO: get all events connected to param id
-    // then compare all end dates to the current date to determine
-    // progress
-  }
-
   render() {
     const { Header, Content } = Layout;
-    const { editingTask, modalVisible, modalMode } = this.state;
+    const { editingTask, modalVisible, modalMode, tasks, progress } = this.state;
+
     return (
       <animated.div style={{...this.props.style, width: "100%" }}>
         <Layout style={{ minHeight: "100vh" }}>
@@ -109,8 +133,8 @@ export default class TaskPage extends React.Component {
           </Header>
           <Content style={{ padding: "1em" }}>
             <List
-              itemLayout="horizontal"
-              dataSource={this.state.tasks} 
+              itemLayout="vertical"
+              dataSource={tasks} 
               renderItem={task => (
                 <List.Item
                   actions={[
@@ -130,6 +154,9 @@ export default class TaskPage extends React.Component {
                     title={task.name}
                     description={task.description}
                   />
+                  <Progress 
+                    strokeColor={{ from: '#9F72E8', to: '#978AFF' }}
+                    percent={progress[task.id]} />
                 </List.Item>
               )}
             />

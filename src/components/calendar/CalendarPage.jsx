@@ -161,10 +161,7 @@ export default class CalendarPage extends React.Component {
   handleMenuClick = e => {
     switch(e.key) {
       case "month":
-        console.log("month");
-        break;
-      case "day":
-        console.log("day");
+        history.push("/");
         break;
       case "tasks":
         history.push("/tasks");
@@ -275,7 +272,7 @@ function convertEvents(events) {
     newEvents[i] = [];
   }
 
-  events.map(event => {
+  events.forEach(event => {
     const dateObj = new Date(event.starts_at);
     const momentObj = moment(dateObj);
     newEvents[momentObj.date()].push(event);
