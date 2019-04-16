@@ -23,7 +23,7 @@ export default class TaskPage extends React.Component {
   }
 
   componentDidMount() {
-    document.title = "PlannerOwO | Tasks"
+    document.title = "PlannerOwO | Tasks";
     tasks.getAllTasks()
       .then(tasks => {
         // Empty tasks if the result is empty
@@ -127,7 +127,7 @@ export default class TaskPage extends React.Component {
               icon="arrow-left"
               size="large"
               ghost="true"
-              onClick={() => history.goBack()}
+              onClick={e => { history.goBack(); e.currentTarget.blur() }}
             />
             <span className="layout-title">Tasks</span>
           </Header>

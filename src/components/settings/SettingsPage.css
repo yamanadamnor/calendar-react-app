@@ -1,0 +1,19 @@
+/* Overrides */
+.header-settings {
+  padding: 0 25px !important;
+}
+
+.header-settings .back-btn {
+  border: 0px !important;
+}
+
+.header-settings .layout-title {
+  color: white;
+  margin-left: 1em;
+  font-size: 1.1em;
+}
+
+/* normal */
+.setting-title {
+  color: var(--color-primary);
+}

@@ -146,10 +146,11 @@ export default class CalendarPage extends React.Component {
     this.setState({ modalMode: mode });
   }
 
-  handleMenuVisibility = () => {
+  handleMenuVisibility = e => {
     this.setState({
       menuCollapsed: !this.state.menuCollapsed,
     })
+    e.currentTarget.blur();
   }
 
   handleMenuBreakpoint = broken => {
@@ -167,7 +168,7 @@ export default class CalendarPage extends React.Component {
         history.push("/tasks");
         break;
       case "settings":
-        console.log("settings");
+        history.push("/settings");
         break;
       case "logout":
         account.logoutAccount()

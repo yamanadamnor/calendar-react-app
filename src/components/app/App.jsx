@@ -1,14 +1,16 @@
 import React from 'react';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, Router, Switch, Redirect } from 'react-router-dom';
 import { Transition, config } from 'react-spring/renderprops';
 
 import * as account from '../../api/account/account';
+import * as utils from '../../api/utils/utils';
 import WelcomePage from '../app/WelcomePage';
 import SetupPage from '../app/SetupPage';
 import RegisterPage from '../auth/register/RegisterPage';
 import LoginPage from '../auth/login/LoginPage';
 import CalendarPage from '../calendar/CalendarPage';
 import TaskPage from '../tasks/TaskPage';
+import SettingsPage from '../settings/SettingsPage';
 import history from '../history';
 import './App.css';
 
@@ -22,14 +24,14 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    let check = await account.validateLoggedIn();
-    this.setState({ loggedIn: check });
+    if (utils.getCookie('X-CSRF-Token')) {
+      let check = await account.validateLoggedIn();
+      this.setState({ loggedIn: check });
+    }
   }
 
   handleLogin = () => {
-    this.setState({
-      loggedIn: true,
-    });
+    this.setState({ loggedIn: true });
     account.getAllSettings()
       .then(res => {
         if (res.length === 0) {
@@ -75,10 +77,16 @@ export default class App extends React.Component {
                   <Route path="/register" render={() => <RegisterPage style={style} onLogin={this.handleLogin} />} />
                   <Route path="/login" render={() => <LoginPage style={style} onLogin={this.handleLogin} />} />
 
-                  {/* Protected routes */}
-                  {this.state.loggedIn && (
-                    <Route path="/tasks" render={() => <TaskPage style={style} />} />
-                  )}
+                  {/* TODO: Protected routes, currently dont work because the validate check doesnt finish in time */}
+                  <Route
+                    path="/tasks" 
+                    render={() => this.state.loggedIn ? <TaskPage style={style} /> :
+                      <Redirect to='/login' />} />
+                  <Route
+                    path="/settings"
+                    render={() => this.state.loggedIn ? <SettingsPage style={style} /> : 
+                      <Redirect to='/login' />} />
+                  {/* end protected routes */}
                 </Switch>
               )}
             </Transition>
