@@ -21,7 +21,15 @@ export default class SettingsPage extends React.Component {
         if (settings === null) {
           return;
         }
-        this.setState({ settings }, () => console.log(this.state.settings.preferred_time));
+        this.setState({ settings });
+      });
+  }
+
+  handleSettingChange = (selected, key) => {
+    let setting = { "setting": selected }
+    account.updateSetting(key, setting)
+      .then(res => {
+        console.log(res);
       });
   }
 
@@ -49,7 +57,10 @@ export default class SettingsPage extends React.Component {
               <div>
                 <div style={{ marginBottom: "1em" }}>
                   <h4 className="setting-title">Preferred working time</h4>
-                  <Select defaultValue={settings.preferred_time} style={{ width: 200 }}>
+                  <Select
+                    defaultValue={settings.preferred_time}
+                    style={{ width: 200 }}
+                    onSelect={selected => this.handleSettingChange(selected, "preferred_time")}>
                     <Option value="morning">Morning</Option>
                     <Option value="daytime">Daytime</Option>
                     <Option value="afternoon">Afternoon</Option>
@@ -58,7 +69,11 @@ export default class SettingsPage extends React.Component {
                 </div>
                 <div>
                   <h4 className="setting-title">Preferred event length</h4>
-                  <Select defaultValue={settings.preferred_length} style={{ width: 200 }}>
+                  <Select
+                    defaultValue={settings.preferred_length}
+                    style={{ width: 200 }}
+                    key="preferred_length"
+                    onSelect={selected => this.handleSettingChange(selected, "preferred_length")}>
                     <Option value="short">Short, but many sessions</Option>
                     <Option value="long">Long, but few sessions</Option>
                   </Select>

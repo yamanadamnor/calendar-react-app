@@ -78,3 +78,20 @@ export function updateAllSettings(answers) {
   }).then(res => res.json())
     .catch(error => console.error("Error:", error));
 }
+
+// setting is an object with the word "setting" as the key
+// and the option as the value.
+// key is the setting itself, e.g. "preferred_time" or "preferred_length"
+export function updateSetting(key, setting) {
+  return fetch(`http://localhost:8000/api/account/setting/${key}`, {
+    method: "PUT",
+    mode: "cors",
+    body: JSON.stringify(setting),
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': utils.getCookie("X-CSRF-Token"),
+    }
+  }).then(res => res.json())
+    .catch(error => console.error("Error:", error));
+}

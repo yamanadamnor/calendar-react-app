@@ -213,10 +213,6 @@ export default class CalendarPage extends React.Component {
                   <Icon type="calendar" />
                   <span className="nav-text">Month</span>
                 </Menu.Item>
-                <Menu.Item key="day">
-                  <Icon type="calendar" />
-                  <span className="nav-text">Day</span>
-                </Menu.Item>
                 <Menu.Item key="tasks">
                   <Icon type="ordered-list" />
                   <span className="nav-text">Tasks</span>
