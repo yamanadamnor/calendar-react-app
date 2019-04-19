@@ -26,9 +26,15 @@ export default class CalendarModal extends React.Component {
   }
 
   renderModalTitle = (start, end, title) => {
-    // TODO: check time zone conversion between server and client
     const sd = new Date(start), ed = new Date(end);
-    const s = moment(sd).calendar(), e = moment(ed).calendar();
+    let s = moment(sd), e = moment(ed);
+    if (e.format('YYYY-MM-DD') > s.format('YYYY-MM-DD')) {
+      s = s.format('h:mm A (ddd)');
+      e = e.format('h:mm A (ddd)');
+    } else {
+      s = s.format('h:mm A');
+      e = e.format('h:mm A');
+    }
 
     return (
       <div>
