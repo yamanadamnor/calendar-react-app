@@ -1,7 +1,7 @@
 import * as utils from '../utils/utils';
 
 export function createAccount(account) {
-  return fetch("http://localhost:8000/auth/register/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/auth/register/`, {
     method: "POST",
     mode: "cors",
     body: JSON.stringify(account),
@@ -14,7 +14,7 @@ export function createAccount(account) {
 }
 
 export function loginAccount(account) {
-  return fetch("http://localhost:8000/auth/login/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/auth/login/`, {
     method: "POST",
     mode: "cors",
     body: JSON.stringify(account),
@@ -27,7 +27,7 @@ export function loginAccount(account) {
 }
 
 export function logoutAccount() {
-  return fetch("http://localhost:8000/api/account/logout/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/account/logout/`, {
     method: "DELETE",
     mode: "cors",
     credentials: 'include',
@@ -39,7 +39,7 @@ export function logoutAccount() {
 }
 
 export async function validateLoggedIn() {
-  const response = await fetch("http://localhost:8000/api/account/validate/", {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/api/account/validate/`, {
     method: "GET",
     mode: "cors",
     credentials: 'include',
@@ -54,7 +54,7 @@ export async function validateLoggedIn() {
 }
 
 export function getAllSettings() {
-  return fetch("http://localhost:8000/api/account/settings/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/account/settings/`, {
     method: "GET",
     mode: "cors",
     credentials: "include",
@@ -66,7 +66,7 @@ export function getAllSettings() {
 }
 
 export function updateAllSettings(answers) {
-  return fetch("http://localhost:8000/api/account/settings/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/account/settings/`, {
     method: "POST",
     mode: "cors",
     body: JSON.stringify(answers),
@@ -83,7 +83,7 @@ export function updateAllSettings(answers) {
 // and the option as the value.
 // key is the setting itself, e.g. "preferred_time" or "preferred_length"
 export function updateSetting(key, setting) {
-  return fetch(`http://localhost:8000/api/account/setting/${key}`, {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/account/setting/${key}`, {
     method: "PUT",
     mode: "cors",
     body: JSON.stringify(setting),

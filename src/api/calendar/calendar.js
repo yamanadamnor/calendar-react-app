@@ -5,7 +5,7 @@ import * as utils from '../utils/utils';
 export function getAllEventsInInterval(from, to) {
   const f = Math.floor(from / 1000);
   const t = Math.floor(to / 1000);
-  const url = `http://localhost:8000/api/calendar/events_interval/${f}/${t}`
+  const url = `${process.env.REACT_APP_API_URL}/api/calendar/events_interval/${f}/${t}`
 
   return fetch(url, {
     method: "GET",
@@ -20,7 +20,7 @@ export function getAllEventsInInterval(from, to) {
 
 // Returns the first 10 events by default
 export function getAllEvents() {
-  return fetch("http://localhost:8000/api/calendar/events/", {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/calendar/events/`, {
     method: "GET",
     mode: "cors",
     credentials: "include",
@@ -32,7 +32,7 @@ export function getAllEvents() {
 }
 
 export function getAllEventsByTaskId(taskId) {
-  const url = `http://localhost:8000/api/calendar/events/task_id/${taskId}`
+  const url = `${process.env.REACT_APP_API_URL}/api/calendar/events/task_id/${taskId}`
 
   return fetch(url, {
     method: "GET",
@@ -47,7 +47,7 @@ export function getAllEventsByTaskId(taskId) {
 
 // event is an object
 export function createEvent(event) {
-  return fetch('http://localhost:8000/api/calendar/event/', {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/calendar/event/`, {
     method: "POST",
     body: JSON.stringify(event),
     mode: "cors",
@@ -62,7 +62,7 @@ export function createEvent(event) {
 
 // event is an object
 export function updateEvent(id, event) {
-  return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/calendar/event/${id}`, {
     method: "PUT",
     body: JSON.stringify(event),
     mode: "cors",
@@ -76,7 +76,7 @@ export function updateEvent(id, event) {
 }
 
 export function deleteEvent(id) {
-  return fetch(`http://localhost:8000/api/calendar/event/${id}`, {
+  return fetch(`${process.env.REACT_APP_API_URL}/api/calendar/event/${id}`, {
     method: "DELETE",
     mode: "cors",
     credentials: "include",
